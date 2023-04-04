@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3095846672929300811}
-  - component: {fileID: 4462631624455348133}
+  - component: {fileID: 1780858920315256948}
   m_Layer: 0
   m_Name: M1911 Handgun Base
   m_TagString: Untagged
@@ -35,7 +35,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &4462631624455348133
+--- !u!114 &1780858920315256948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,10 +44,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3090027955129370429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d11f466d6f5b574880d8d36739c48bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 80b2f3098d3e4d046a96807279fc3815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 3605086502818467497}
+  shootPosition: {fileID: 3091841765279280817}
+  shootLayerMask:
+    serializedVersion: 2
+    m_Bits: 448
 --- !u!1 &3090136060485069765
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3091841765279280817}
   m_Layer: 0
-  m_Name: Barrel_Location
+  m_Name: Shoot_Loaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

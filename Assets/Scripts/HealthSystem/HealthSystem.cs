@@ -10,19 +10,19 @@ using UnityEngine;
 
 namespace FPS.Core
 {
-    public class HealthSystem : MonoBehaviour
+    public class HealthSystem : MonoBehaviour, IDamagable
     {
         public event EventHandler OnTakeDanage;
         public event EventHandler OnHeal;
-
         private float currentHealth;
+
         [SerializeField] private float maxHealth = 100;
 
         private void Awake()
         {
             currentHealth = maxHealth;
         }
-        public void Damage(int amount)
+        public void TakeDamage(float amount)
         {
             currentHealth -= amount;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -47,6 +47,7 @@ namespace FPS.Core
         }
 
         public float GetHealthPrecent() => currentHealth / maxHealth;
+
     }
 }
 
