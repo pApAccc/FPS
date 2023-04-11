@@ -1,7 +1,4 @@
-using Mono.CSharp;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -14,7 +11,10 @@ namespace FPS.Core
     {
         public event EventHandler OnTakeDanage;
         public event EventHandler OnHeal;
+        public event EventHandler OnDead;
+
         private float currentHealth;
+        private bool deadOnce = false;
 
         [SerializeField] private float maxHealth = 100;
 
@@ -22,6 +22,7 @@ namespace FPS.Core
         {
             currentHealth = maxHealth;
         }
+
         public void TakeDamage(float amount)
         {
             currentHealth -= amount;
@@ -43,7 +44,11 @@ namespace FPS.Core
 
         private void Dead()
         {
-
+            if (!deadOnce)
+            {
+                OnDead?.Invoke(this, EventArgs.Empty);
+                deadOnce = true;
+            }
         }
 
         public float GetHealthPrecent() => currentHealth / maxHealth;

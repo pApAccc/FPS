@@ -17,6 +17,7 @@ namespace FPS.EnemyAI
         private EnemyMotor enemyMotor;
         private EnemyPatrolState enemyPatrolState;
         private EnemyFightState enemyFightState;
+        private HealthSystem healthSystem;
 
         [SerializeField] private float chaseDistance = 10;
 
@@ -26,12 +27,22 @@ namespace FPS.EnemyAI
             enemyMotor = GetComponent<EnemyMotor>();
             enemyPatrolState = GetComponent<EnemyPatrolState>();
             enemyFightState = GetComponent<EnemyFightState>();
+            healthSystem = GetComponent<HealthSystem>();
         }
 
         private void Start()
         {
             stateMachine.ChangeState(enemyPatrolState);
+
+            healthSystem.OnDead += HealthSystem_OnDead;
         }
+
+        #region 注册事件
+        private void HealthSystem_OnDead(object sender, System.EventArgs e)
+        {
+            Destroy(gameObject);
+        }
+        #endregion
 
         private void Update()
         {

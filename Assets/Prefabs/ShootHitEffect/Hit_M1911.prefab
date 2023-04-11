@@ -14658,7 +14658,7 @@ GameObject:
   - component: {fileID: 198597057764362178}
   - component: {fileID: 199759440541144098}
   m_Layer: 0
-  m_Name: Hit 7
+  m_Name: Hit_M1911
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

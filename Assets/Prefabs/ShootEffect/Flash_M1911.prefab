@@ -9779,7 +9779,7 @@ GameObject:
   - component: {fileID: 199865209623450004}
   - component: {fileID: 6927280355132751310}
   m_Layer: 0
-  m_Name: Flash 7
+  m_Name: Flash_M1911
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

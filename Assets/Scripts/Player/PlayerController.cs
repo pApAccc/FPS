@@ -21,6 +21,7 @@ namespace FPS.Core
         private GameInput gameInput;
 
         [SerializeField] private float moveSpeed = 1;
+        [SerializeField] private float runSpeed = 2;
         [SerializeField] private float rotateSpeed = 1;
         [SerializeField] private Transform cameraTransform;
         [SerializeField] private float gravity = -9.8f;
@@ -64,8 +65,11 @@ namespace FPS.Core
         private void Move()
         {
             //水平移动
+            float calculateSpeed = moveSpeed;//重新计算速度
+            if (GameInput.Instance.IsRun()) calculateSpeed += runSpeed;
+
             Vector2 moveInput = gameInput.GetMoveDiection();
-            Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y) * Time.deltaTime * moveSpeed;
+            Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y) * Time.deltaTime * calculateSpeed;
             characterController.Move(transform.right * moveDirection.x + transform.forward * moveDirection.z);
 
             //跳跃移动
@@ -83,7 +87,8 @@ namespace FPS.Core
             if (gameInput.GetMouseMoveDelta().sqrMagnitude > 0.01f)
             {
                 Vector2 mouseDirection = gameInput.GetMouseMoveDelta() * rotateSpeed * Time.deltaTime;
-                cameraEuler -= Mathf.Clamp(mouseDirection.y, -90, 90);
+                cameraEuler -= mouseDirection.y;
+                cameraEuler = Mathf.Clamp(cameraEuler, -90, 90);
 
                 cameraTransform.localRotation = Quaternion.Euler(cameraEuler, 0, 0);
                 transform.Rotate(Vector3.up * mouseDirection.x);

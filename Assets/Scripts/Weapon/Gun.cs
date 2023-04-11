@@ -24,8 +24,6 @@ namespace FPS.Weapon
         private float lowPitch;
         private float highPitch;
 
-        private BulletSO bulletSO;
-
         private bool canShoot;
 
         [SerializeField] private Transform shootPosition;
@@ -47,8 +45,6 @@ namespace FPS.Weapon
             shootAudioClip = weaponSO.shootAudioClip;
             lowPitch = weaponSO.lowPitch;
             highPitch = weaponSO.highPitch;
-
-            bulletSO = weaponSO.bulletSO;
         }
 
         protected void Update()
@@ -68,7 +64,8 @@ namespace FPS.Weapon
         {
             if (canShoot)
             {
-                animator.SetTrigger("Fire");
+                if (animator != null)
+                    animator.SetTrigger("Fire");
 
                 //射击音效
                 SoundManager.Instance.PlayGunShootClip(shootAudioClip, GetRandomPitch(), transform.position, Quaternion.identity);
@@ -77,15 +74,9 @@ namespace FPS.Weapon
                 Component flashComponent = GameObjectPool.Instance.GetComponentFromPool(shootEffect, shootPosition.position, Quaternion.identity);
                 flashComponent.gameObject.SetActive(true);
 
-                //诞生子弹
-                //Bullet bulletComponent = GameObjectPool.Instance.GetComponentFromPool(bulletSO.bulletPrefab,
-                //                         shootPosition.position, Quaternion.identity) as Bullet;
-                //bulletComponent.gameObject.SetActive(true);
-                //bulletComponent.SetBullet(bulletSO, maxShootRange);
-
                 if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, maxShootRange, shootLayerMask))
                 {
-                    hit.transform.GetComponent<IDamagable>()?.TakeDamage(damage);
+                    hit.transform.GetComponentInParent<IDamagable>()?.TakeDamage(damage);
                     Component hitEffectComponent = GameObjectPool.Instance.GetComponentFromPool(shootHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                     hitEffectComponent.gameObject.SetActive(true);
                 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 3090027955129370429, guid: d6c62022371374e48a1cedbed1980b45,
     type: 3}
+  spawnPosition: {x: 0.5, y: -0.6, z: 0.81}
   damage: 20
   shootInterval: 0.5
   shootEffect: {fileID: 1687680602027628, guid: 858edc85861918d4a9fa4161e0e22b7c,
@@ -24,4 +25,3 @@ MonoBehaviour:
   shootAudioClip: {fileID: 8300000, guid: 1b766da7cc2d648aa84e36cb5fe8abcb, type: 3}
   lowPitch: 0.8
   highPitch: 2
-  bulletSO: {fileID: 11400000, guid: 03c580ad1f3d8114c977bb9aac0018a2, type: 2}

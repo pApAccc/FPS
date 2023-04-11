@@ -1,3 +1,4 @@
+using Mono.CSharp;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace FPS.Weapon
         [Space(10)]
         [Header("武器基础设置")]
         public GameObject weaponPrefab;
+        [Tooltip("武器诞生位置")]
+        public Vector3 spawnPosition;
         public float damage;
         public float shootInterval;
         public GameObject shootEffect;
@@ -25,16 +28,12 @@ namespace FPS.Weapon
         public float lowPitch = .8f;
         public float highPitch = 2f;
 
-        [Space(10)]
-        [Header("子弹")]
-        public BulletSO bulletSO;
 
         #region OnValidate
         private void OnValidate()
         {
             if (weaponPrefab == null) Debug.Log("weapoPrefab是空的");
             if (shootAudioClip == null) Debug.Log("clipPlayOneShot是空的");
-            if (bulletSO == null) Debug.Log("bulletSO是空的");
             if (lowPitch > highPitch) Debug.Log("lowPitch 大于 highPitch");
 
         }

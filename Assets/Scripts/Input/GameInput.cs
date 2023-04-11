@@ -11,6 +11,7 @@ namespace FPS.Core
     {
         public event EventHandler OnJump;
         public event EventHandler OnInteract;
+        public event EventHandler<float> OnMouseScrollValueChanged;
 
         private GameInputControl input;
 
@@ -24,6 +25,16 @@ namespace FPS.Core
             input.Player.Jump.performed += Jump_performed;
             input.Player.Interact.performed += Interact_performed;
 
+
+        }
+
+        private void Update()
+        {
+            float mouseScrollValue = input.Player.MouseScroll.ReadValue<float>();
+            if (mouseScrollValue != 0)
+            {
+                OnMouseScrollValueChanged?.Invoke(this, mouseScrollValue);
+            }
         }
 
         private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -48,12 +59,19 @@ namespace FPS.Core
             return mouseDirection;
         }
 
+        public float GetMouseScroll()
+        {
+            return input.Player.MouseScroll.ReadValue<float>();
+        }
+
         private void OnDestroy()
         {
             input.Dispose();
         }
 
         public bool IsFire() => input.Player.Fire.IsPressed();
+
+        public bool IsRun() => input.Player.Run.IsPressed();
     }
 
 }
