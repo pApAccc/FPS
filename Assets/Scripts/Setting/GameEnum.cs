@@ -5,14 +5,13 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-namespace ns
+namespace FPS.GameEnum
 {
-    public class Show : ITest
+    public enum AmmoType
     {
-
-        public void TestFunc()
-        {
-            Debug.Log("Show");
-        }
+        pistolAmmo,
+        rifleAmmo,
+        flareGunAmmo
     }
+
 }

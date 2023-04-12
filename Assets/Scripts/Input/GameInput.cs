@@ -1,6 +1,7 @@
 using FPS.Helper;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 /// <summary>
 /// 
 /// </summary>
@@ -11,6 +12,7 @@ namespace FPS.Core
     {
         public event EventHandler OnJump;
         public event EventHandler OnInteract;
+        public event EventHandler OnFire;
         public event EventHandler<float> OnMouseScrollValueChanged;
 
         private GameInputControl input;
@@ -24,8 +26,6 @@ namespace FPS.Core
             input.Enable();
             input.Player.Jump.performed += Jump_performed;
             input.Player.Interact.performed += Interact_performed;
-
-
         }
 
         private void Update()
@@ -34,6 +34,11 @@ namespace FPS.Core
             if (mouseScrollValue != 0)
             {
                 OnMouseScrollValueChanged?.Invoke(this, mouseScrollValue);
+            }
+
+            if (IsFire())
+            {
+                OnFire?.Invoke(this, EventArgs.Empty);
             }
         }
 

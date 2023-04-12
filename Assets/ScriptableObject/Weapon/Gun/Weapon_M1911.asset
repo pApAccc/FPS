@@ -17,11 +17,13 @@ MonoBehaviour:
   spawnPosition: {x: 0.5, y: -0.6, z: 0.81}
   damage: 20
   shootInterval: 0.5
-  shootEffect: {fileID: 1687680602027628, guid: 858edc85861918d4a9fa4161e0e22b7c,
+  shootEffect: {fileID: 1687680602027628, guid: 273995d68fa95424eb14d4a430334ae4,
     type: 3}
   shootHitEffect: {fileID: 1900636369659048, guid: 7712e46fb3b46064397b699d370056ae,
     type: 3}
   maxShootRange: 150
+  ammoCapcity: 15
+  ammoType: 0
   shootAudioClip: {fileID: 8300000, guid: 1b766da7cc2d648aa84e36cb5fe8abcb, type: 3}
   lowPitch: 0.8
   highPitch: 2

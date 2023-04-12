@@ -1,18 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using FPS.GameEnum;
+using System;
 using UnityEngine;
-using DG.Tweening;
-using FPS.Helper;
 
 /// <summary>
 /// 
 /// </summary>
 
-public class Test : SingletonMonoBehaviour<Test>
+public class Test : MonoBehaviour
 {
-    public void Call()
+    private void Start()
     {
-        print("call");
+
     }
 
 }

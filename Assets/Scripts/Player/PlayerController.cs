@@ -12,7 +12,7 @@ namespace FPS.Core
 {
     public class PlayerController : MonoBehaviour
     {
-        public event EventHandler OnFire;
+
 
         private CharacterController characterController;
         private float cameraEuler;
@@ -50,11 +50,6 @@ namespace FPS.Core
         {
             isGround = characterController.isGrounded;
             Move();
-
-            if (gameInput.IsFire())
-            {
-                OnFire?.Invoke(this, EventArgs.Empty);
-            }
         }
 
         private void LateUpdate()

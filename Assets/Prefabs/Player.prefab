@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 2806433485948941634}
   - component: {fileID: 1020826060}
   - component: {fileID: 1020826062}
+  - component: {fileID: 1450335362}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -335,11 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e9a3b3aade5043a6f2350710467d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponRoot: {fileID: 2272333519009255114}
   healthBarUI: {fileID: 0}
-  weaponSOList:
-  - {fileID: 11400000, guid: a34f80c7bea842d4dae675d2dae0047a, type: 2}
-  - {fileID: 11400000, guid: a8fc0f3a7eaa1654ab2af913afe8864b, type: 2}
 --- !u!114 &2806433485948941634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +385,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &1450335362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2806433485948941637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce04a56919f2a24ba993a06aa10a059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponRoot: {fileID: 2272333519009255114}
+  weaponSOList:
+  - {fileID: 11400000, guid: a8fc0f3a7eaa1654ab2af913afe8864b, type: 2}
+  - {fileID: 11400000, guid: a34f80c7bea842d4dae675d2dae0047a, type: 2}
 --- !u!1 &3999321005620369569
 GameObject:
   m_ObjectHideFlags: 0

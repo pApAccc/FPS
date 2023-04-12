@@ -21,6 +21,8 @@ MonoBehaviour:
   shootHitEffect: {fileID: 1339124478685776, guid: 81a0e7c90e4f7b04cbff182f7fbc19c2,
     type: 3}
   maxShootRange: 150
+  ammoCapcity: 8
+  ammoType: 2
   shootAudioClip: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
   lowPitch: 0.8
   highPitch: 2
