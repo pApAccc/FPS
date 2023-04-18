@@ -17,6 +17,15 @@ namespace FPS.Core
         private HealthSystem healthSystem;
         private PlayerWeapon playerWeapon;
 
+        public PlayerWeapon PlayerWeapon
+        {
+            get
+            {
+                if (playerWeapon == null) playerWeapon = GetComponent<PlayerWeapon>();
+                return playerWeapon;
+            }
+        }
+
         [SerializeField] private HealthBarUI healthBarUI;
         [SerializeField] private AmmoSO ammoSO;
 
@@ -27,7 +36,6 @@ namespace FPS.Core
             playerController = GetComponent<PlayerController>();
             playerRayCast = GetComponent<PlayerRayCast>();
             healthSystem = GetComponent<HealthSystem>();
-            playerWeapon = GetComponent<PlayerWeapon>();
         }
 
         private void Start()
@@ -53,8 +61,6 @@ namespace FPS.Core
         public PlayerRayCast GetPlayerRayCast() => playerRayCast;
 
         public HealthSystem GetHealthSystem() => healthSystem;
-
-        public PlayerWeapon GetWeapon() => playerWeapon;
 
         public AmmoSO GetAmmoSO() => ammoSO;
     }

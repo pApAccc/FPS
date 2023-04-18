@@ -337,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarUI: {fileID: 0}
+  ammoSO: {fileID: 11400000, guid: 8943f0c1c3e89854ca5073fb9cfcd624, type: 2}
 --- !u!114 &2806433485948941634
 MonoBehaviour:
   m_ObjectHideFlags: 0

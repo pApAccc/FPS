@@ -3,6 +3,7 @@ using FPS.FPSResource;
 using FPS.GameEnum;
 using FPS.Helper;
 using FPS.Sound;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -26,6 +27,8 @@ namespace FPS.Weapon
         //武器子弹设置
         private int ammoCapcity;
         private int remainAmmo;
+        private float reloadTimerMax;
+        private float reloadTimer = 0;
         private AmmoType ammoType;
 
         //音效
@@ -35,6 +38,7 @@ namespace FPS.Weapon
 
         private bool canShoot = true;
         private Dictionary<AmmoType, int> ammoDictionary;
+        private Action onReloadCompleted;
 
         [SerializeField] private Transform shootPosition;
         [SerializeField] private LayerMask shootLayerMask;
@@ -51,9 +55,11 @@ namespace FPS.Weapon
             maxShootRange = weaponSO.maxShootRange;
             shootEffect = weaponSO.shootEffect;
             shootHitEffect = weaponSO.shootHitEffect;
+
             ammoCapcity = weaponSO.ammoCapcity;
             remainAmmo = ammoCapcity;
             ammoType = weaponSO.ammoType;
+            reloadTimerMax = weaponSO.reloadTimer;
 
             shootAudioClip = weaponSO.shootAudioClip;
             lowPitch = weaponSO.lowPitch;
@@ -70,15 +76,21 @@ namespace FPS.Weapon
                 shootTimer -= Time.deltaTime;
             }
 
-            if (remainAmmo == 0)
+            //武器换弹计时
+            if (reloadTimer > 0)
             {
-                canShoot = false;
+                reloadTimer -= Time.deltaTime;
+
+                if (reloadTimer <= 0)
+                {
+                    ReloadWeapon();
+                }
             }
         }
 
         public bool TryShoot()
         {
-            if (shootTimer <= 0 && canShoot)
+            if (shootTimer <= 0 && canShoot && remainAmmo > 0)
             {
                 if (animator != null)
                     animator.SetTrigger("Fire");
@@ -101,17 +113,40 @@ namespace FPS.Weapon
                 shootTimer = shootInterval;
                 remainAmmo -= 1;
 
+                if (remainAmmo == 0)
+                {
+                    canShoot = false;
+                }
+
                 return true;
             }
             return false;
         }
 
-        public bool TryReload()
+        /// <summary>
+        /// 尝试换弹
+        /// </summary>
+        /// <returns></returns>
+        public bool TryReload(Action onReloadCompleted)
         {
             //查看能否更换弹夹
             if (remainAmmo >= ammoCapcity) return false;
             if (ammoDictionary[ammoType] == 0) return false;
+            if (reloadTimer > 0) return false;
 
+            canShoot = false;
+            this.onReloadCompleted = onReloadCompleted;
+
+            if (reloadTimer <= 0)
+                reloadTimer = reloadTimerMax;
+            return true;
+        }
+
+        /// <summary>
+        /// 换弹
+        /// </summary>
+        private void ReloadWeapon()
+        {
             //查看需要更换几发子弹
             int reloadAmmoCount = ammoCapcity - remainAmmo;
             if (ammoDictionary[ammoType] >= reloadAmmoCount)
@@ -125,8 +160,9 @@ namespace FPS.Weapon
                 ammoDictionary[ammoType] = 0;
             }
 
+            //回调函数
+            onReloadCompleted();
             canShoot = true;
-            return true;
         }
 
         private float GetRandomPitch()
@@ -144,5 +180,18 @@ namespace FPS.Weapon
                 return 0;
         }
 
+        public float GetReloadTimeMax() => reloadTimerMax;
+
+        /// <summary>
+        /// 当前武器是否正在换弹
+        /// </summary>
+        /// <returns></returns>
+        public bool IsReloading() => reloadTimer > 0;
+
+        public void ResetReloading()
+        {
+            reloadTimer = -1;
+            canShoot = true;
+        }
     }
 }

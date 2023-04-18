@@ -17,5 +17,3 @@ MonoBehaviour:
     ammoAmount: 120
   - ammotype: 2
     ammoAmount: 50
-  - ammotype: 1
-    ammoAmount: 40

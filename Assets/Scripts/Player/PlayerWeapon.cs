@@ -13,6 +13,7 @@ namespace FPS.Core
     {
         public event EventHandler<OnShootEventArgs> OnShoot;
         public event EventHandler<OnChangeWeaponEventArgs> OnChangeWeapon;
+        public event EventHandler<OnWeaponReloadCompletedEventArgs> OnWeaponReloadCompleted;
         public event EventHandler<OnWeaponReloadEventArgs> OnWeaponReload;
 
         private Gun currentWeapon;
@@ -32,9 +33,15 @@ namespace FPS.Core
         {
             GameInput.Instance.OnMouseScrollValueChanged += Instance_OnMouseScrollValueChanged;
             GameInput.Instance.OnFire += Instance_OnFire;
+            GameInput.Instance.OnReload += Instance_OnReload;
 
             //初始化武器列表中的武器，并装备默认武器
             InitializeWeapon();
+        }
+
+        private void Instance_OnReload(object sender, EventArgs e)
+        {
+            ReloadWeapon();
         }
 
         /// <summary>
@@ -46,22 +53,40 @@ namespace FPS.Core
         {
             if (currentWeapon.TryShoot())
             {
+                //更新UI相关元素
                 OnShoot?.Invoke(this, new OnShootEventArgs
                 {
                     reaminAmmo = currentWeapon.GetRemainAmmo(),
                     remainAmmoTypeAmmoAmount = currentWeapon.GetCurrentAmmoTypeAmmoAmount()
                 });
             }
+            //自动换弹
             else if (currentWeapon.GetRemainAmmo() == 0)
             {
-                if (currentWeapon.TryReload())
+                ReloadWeapon();
+            }
+        }
+
+        /// <summary>
+        /// 武器换弹
+        /// </summary>
+        private void ReloadWeapon()
+        {
+            Action onReloadCompleted = () =>
+            {
+                OnWeaponReloadCompleted?.Invoke(this, new OnWeaponReloadCompletedEventArgs
                 {
-                    OnWeaponReload?.Invoke(this, new OnWeaponReloadEventArgs
-                    {
-                        reaminAmmo = currentWeapon.GetRemainAmmo(),
-                        remainAmmoTypeAmmoAmount = currentWeapon.GetCurrentAmmoTypeAmmoAmount()
-                    });
-                }
+                    reaminAmmo = currentWeapon.GetRemainAmmo(),
+                    remainAmmoTypeAmmoAmount = currentWeapon.GetCurrentAmmoTypeAmmoAmount(),
+                });
+            };
+
+            if (currentWeapon.TryReload(onReloadCompleted))
+            {
+                OnWeaponReload?.Invoke(this, new OnWeaponReloadEventArgs
+                {
+                    reloadTime = currentWeapon.GetReloadTimeMax()
+                });
             }
         }
 
@@ -143,12 +168,12 @@ namespace FPS.Core
         /// <param name="weapon"></param>
         private void SpawnWeapon(WeaponSO weapon)
         {
+            //诞生武器，设置诞生位置
             GameObject spawnedWeapon = Instantiate(weapon.weaponPrefab, weaponRoot);
             spawnedWeapon.transform.localPosition = weapon.spawnPosition;
 
-            Gun spawnedGun = spawnedWeapon.GetComponent<Gun>();
-
             //简历映射关系
+            Gun spawnedGun = spawnedWeapon.GetComponent<Gun>();
             weaponDict.Add(weapon, spawnedGun);
 
             spawnedGun.ReadyShoot(weapon);
@@ -179,6 +204,11 @@ namespace FPS.Core
                 }
             }
 
+            //如果当前武器正在换弹，重置换弹
+            if (currentWeapon.IsReloading())
+            {
+                currentWeapon.ResetReloading();
+            }
             EquipWeapon(weaponSOList[index]);
         }
 
@@ -192,6 +222,11 @@ namespace FPS.Core
         #endregion
     }
 
+    public class OnWeaponReloadEventArgs : EventArgs
+    {
+        public float reloadTime;
+    }
+
     public class OnChangeWeaponEventArgs : EventArgs
     {
         public int reaminAmmo;
@@ -203,7 +238,7 @@ namespace FPS.Core
         public int remainAmmoTypeAmmoAmount;
     }
 
-    public class OnWeaponReloadEventArgs : EventArgs
+    public class OnWeaponReloadCompletedEventArgs : EventArgs
     {
         public int reaminAmmo;
         public int remainAmmoTypeAmmoAmount;

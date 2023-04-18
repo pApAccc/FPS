@@ -20,11 +20,14 @@ namespace FPS.Weapon
         public GameObject shootHitEffect;
         public float maxShootRange = 150;
 
+
         [Space(10)]
         [Header("子弹设置")]
         [Tooltip("弹夹容量")]
         public int ammoCapcity = 7;
+        public float reloadTimer = 1;
         public AmmoType ammoType;
+
 
         [Space(10)]
         [Header("武器声音设置")]

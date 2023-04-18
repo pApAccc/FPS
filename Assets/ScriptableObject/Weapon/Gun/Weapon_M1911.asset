@@ -23,6 +23,7 @@ MonoBehaviour:
     type: 3}
   maxShootRange: 150
   ammoCapcity: 15
+  reloadTimer: 1.5
   ammoType: 0
   shootAudioClip: {fileID: 8300000, guid: 1b766da7cc2d648aa84e36cb5fe8abcb, type: 3}
   lowPitch: 0.8

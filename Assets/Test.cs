@@ -1,5 +1,6 @@
 using FPS.GameEnum;
 using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -8,9 +9,5 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    private void Start()
-    {
-
-    }
 
 }

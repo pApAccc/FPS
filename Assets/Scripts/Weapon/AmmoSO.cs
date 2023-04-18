@@ -15,7 +15,6 @@ namespace FPS.Weapon
         [Header("子弹数量设置")]
         [SerializeField] List<Ammo> ammos;
 
-
         private Dictionary<AmmoType, int> ammoDictionary;
         public Dictionary<AmmoType, int> AmmoDictionary
         {
