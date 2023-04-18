@@ -11,8 +11,7 @@ namespace FPS.Core
     {
         public event EventHandler<OnInterableChangedEventArgs> OnInterableChanged;
         //射线打中的物体
-        private InterableObject interable;
-        private IInterable interableInterface;
+        private InterableObject previousInteractObj;
 
         [SerializeField] private Transform cameraRoot;
         [SerializeField] private float rayCastDistance = 3;
@@ -25,7 +24,7 @@ namespace FPS.Core
 
         private void GameInput_OnInteract(object sender, EventArgs e)
         {
-            interableInterface?.Interact();
+            previousInteractObj?.Interact();
         }
 
         private void Update()
@@ -34,15 +33,14 @@ namespace FPS.Core
             if (Physics.Raycast(cameraRoot.position, cameraRoot.forward, out RaycastHit hit, rayCastDistance, layerMask))
             {
                 InterableObject hitInterable = hit.transform.GetComponent<InterableObject>();
-                interableInterface = hit.transform.GetComponent<IInterable>();
 
                 //打中新物体
-                if (interable != hitInterable)
+                if (previousInteractObj != hitInterable)
                 {
-                    interable = hitInterable;
+                    previousInteractObj = hitInterable;
                     OnInterableChanged?.Invoke(this, new OnInterableChangedEventArgs
                     {
-                        message = interable.message,
+                        message = previousInteractObj.message,
                         isHit = true
                     });
                 }
@@ -50,10 +48,9 @@ namespace FPS.Core
             //没打中物体
             else
             {
-                if (interable != null || interableInterface != null)
+                if (previousInteractObj != null)
                 {
-                    interable = null;
-                    interableInterface = null;
+                    previousInteractObj = null;
 
                     OnInterableChanged?.Invoke(this, new OnInterableChangedEventArgs
                     {

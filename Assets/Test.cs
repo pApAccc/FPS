@@ -1,4 +1,4 @@
-using FPS.GameEnum;
+
 using System;
 using System.Collections;
 using UnityEngine;

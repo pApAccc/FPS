@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 /// <summary>
 /// 
 /// </summary>
 namespace FPS.Core
 {
-    public class House : InterableObject
+    public class Button : InterableObject
     {
+        [SerializeField] private Door door;
         public override void Interact()
         {
-            print("我是房子");
+            door.ToggleDoor();
         }
     }
 }
-

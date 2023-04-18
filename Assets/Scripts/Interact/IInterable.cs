@@ -11,6 +11,7 @@ namespace FPS.Core
     public interface IInterable
     {
         public void Interact();
+
     }
 }
 

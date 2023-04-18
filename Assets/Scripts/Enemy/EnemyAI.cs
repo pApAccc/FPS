@@ -1,4 +1,5 @@
 using FPS.Core;
+using FPS.UI;
 using UnityEngine;
 /// <summary>
 /// 
@@ -19,6 +20,7 @@ namespace FPS.EnemyAI
         private EnemyFightState enemyFightState;
         private HealthSystem healthSystem;
 
+        [SerializeField] private HealthBarUI healthBarUI;
         [SerializeField] private float chaseDistance = 10;
 
         private void Awake()
@@ -28,6 +30,8 @@ namespace FPS.EnemyAI
             enemyPatrolState = GetComponent<EnemyPatrolState>();
             enemyFightState = GetComponent<EnemyFightState>();
             healthSystem = GetComponent<HealthSystem>();
+
+            healthBarUI.gameObject.SetActive(false);
         }
 
         private void Start()
@@ -35,12 +39,35 @@ namespace FPS.EnemyAI
             stateMachine.ChangeState(enemyPatrolState);
 
             healthSystem.OnDead += HealthSystem_OnDead;
+            healthSystem.OnTakeDanage += HealthSystem_OnTakeDanage;
+            healthSystem.OnHeal += HealthSystem_OnHeal;
         }
 
         #region 注册事件
         private void HealthSystem_OnDead(object sender, System.EventArgs e)
         {
             Destroy(gameObject);
+        }
+        private void HealthSystem_OnTakeDanage(object sender, System.EventArgs e)
+        {
+            healthBarUI.DamageVisual(healthSystem.GetHealthPrecent());
+
+            //显示血量UI
+            if (healthSystem.GetHealthPrecent() < 1)
+            {
+                healthBarUI.gameObject.SetActive(true);
+            }
+        }
+
+        private void HealthSystem_OnHeal(object sender, System.EventArgs e)
+        {
+            healthBarUI.healVisual(healthSystem.GetHealthPrecent());
+
+            //关闭血量UI
+            if (healthSystem.GetHealthPrecent() >= 1)
+            {
+                healthBarUI.gameObject.SetActive(false);
+            }
         }
         #endregion
 

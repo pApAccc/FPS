@@ -1,6 +1,6 @@
 using FPS.Core;
 using FPS.FPSResource;
-using FPS.GameEnum;
+using FPS.Settings;
 using FPS.Helper;
 using FPS.Sound;
 using System;

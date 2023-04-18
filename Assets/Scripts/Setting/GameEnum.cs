@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-namespace FPS.GameEnum
+namespace FPS.Settings
 {
     public enum AmmoType
     {
