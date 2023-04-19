@@ -11,10 +11,20 @@ namespace FPS.Core
         private Animator animator;
         private bool isOpen = false;
 
+        [SerializeField] private Transform enemySpawnPoint;
+        public Transform EnemySpawnPoint
+        {
+            get
+            {
+                return enemySpawnPoint;
+            }
+        }
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
         }
+
         public void ToggleDoor()
         {
             if (!isOpen)
@@ -26,6 +36,14 @@ namespace FPS.Core
                 animator.SetTrigger(Setting.close);
             }
             isOpen = !isOpen;
+        }
+
+        /// <summary>
+        /// 动画函数
+        /// </summary>
+        private void SetDoorActive()
+        {
+            gameObject.SetActive(isOpen);
         }
     }
 }

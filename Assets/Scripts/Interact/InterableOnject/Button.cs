@@ -1,3 +1,4 @@
+using FPS.EnemyAI;
 using UnityEngine;
 /// <summary>
 /// 
@@ -7,9 +8,17 @@ namespace FPS.Core
     public class Button : InterableObject
     {
         [SerializeField] private Door door;
+        [SerializeField] private EnemySpawner enemySpawner;
+
+        private void Awake()
+        {
+            enemySpawner.gameObject.SetActive(false);
+        }
+
         public override void Interact()
         {
             door.ToggleDoor();
+            enemySpawner.gameObject.SetActive(true);
         }
     }
 }

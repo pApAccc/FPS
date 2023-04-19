@@ -1,5 +1,6 @@
 using FPS.Core;
 using FPS.UI;
+using System;
 using UnityEngine;
 /// <summary>
 /// 
@@ -7,19 +8,18 @@ using UnityEngine;
 
 namespace FPS.EnemyAI
 {
-    [RequireComponent(typeof(EnemyMotor))]
-    [RequireComponent(typeof(StateMachine))]
-    [RequireComponent(typeof(EnemyPatrolState))]
-    [RequireComponent(typeof(EnemyFightState))]
 
     public class EnemyAI : MonoBehaviour
     {
+        public static event EventHandler OnAllEnemyDead;
+
         private StateMachine stateMachine;
         private EnemyMotor enemyMotor;
         private EnemyPatrolState enemyPatrolState;
         private EnemyFightState enemyFightState;
         private HealthSystem healthSystem;
 
+        [SerializeField] private bool isAngry = false;
         [SerializeField] private HealthBarUI healthBarUI;
         [SerializeField] private float chaseDistance = 10;
 
@@ -44,11 +44,13 @@ namespace FPS.EnemyAI
         }
 
         #region 注册事件
-        private void HealthSystem_OnDead(object sender, System.EventArgs e)
+        private void HealthSystem_OnDead(object sender, EventArgs e)
         {
             Destroy(gameObject);
+
+            OnAllEnemyDead?.Invoke(this, EventArgs.Empty);
         }
-        private void HealthSystem_OnTakeDanage(object sender, System.EventArgs e)
+        private void HealthSystem_OnTakeDanage(object sender, EventArgs e)
         {
             healthBarUI.DamageVisual(healthSystem.GetHealthPrecent());
 
@@ -73,6 +75,12 @@ namespace FPS.EnemyAI
 
         private void Update()
         {
+            if (isAngry)
+            {
+                stateMachine.ChangeState(enemyFightState);
+                return;
+            }
+
             //与玩家距离小于chaseDistance时，改变状态
             if (Vector3.Distance(transform.position, Player.Instance.transform.position) < chaseDistance)
             {

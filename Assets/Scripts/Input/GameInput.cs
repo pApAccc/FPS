@@ -14,6 +14,7 @@ namespace FPS.Core
         public event EventHandler OnInteract;
         public event EventHandler OnFire;
         public event EventHandler OnReload;
+        public event EventHandler OnPause;
         public event EventHandler<float> OnMouseScrollValueChanged;
 
         private GameInputControl input;
@@ -27,6 +28,7 @@ namespace FPS.Core
             input.Player.Jump.performed += Jump_performed;
             input.Player.Interact.performed += Interact_performed;
             input.Player.Reload.performed += Reload_performed;
+            input.Player.Pause.performed += Pause_performed;
         }
 
         private void Update()
@@ -56,6 +58,11 @@ namespace FPS.Core
         private void Reload_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             OnReload?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            OnPause?.Invoke(this, EventArgs.Empty);
         }
 
         public Vector2 GetMoveDiection()

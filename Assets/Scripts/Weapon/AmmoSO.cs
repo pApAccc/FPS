@@ -32,6 +32,19 @@ namespace FPS.Weapon
                 return ammoDictionary;
             }
         }
+
+        public void FillAmmo()
+        {
+            var array = Enum.GetValues(typeof(AmmoType));
+            foreach (AmmoType ammoType in array)
+            {
+                if (ammoDictionary.ContainsKey(ammoType))
+                {
+                    Debug.Log(ammoType);
+                    ammoDictionary[ammoType] += 30;
+                }
+            }
+        }
     }
 
     [Serializable]

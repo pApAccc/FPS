@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponPrefab: {fileID: 3090027955129370429, guid: d6c62022371374e48a1cedbed1980b45,
     type: 3}
   spawnPosition: {x: 0.5, y: -0.6, z: 0.81}
-  damage: 20
+  damage: 15
   shootInterval: 0.5
   shootEffect: {fileID: 1687680602027628, guid: 273995d68fa95424eb14d4a430334ae4,
     type: 3}

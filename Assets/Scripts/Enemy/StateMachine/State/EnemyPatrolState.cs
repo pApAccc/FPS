@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
 using Common;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// 巡逻状态
@@ -52,7 +49,6 @@ namespace FPS.EnemyAI
         /// <returns></returns>
         private void SetNearestPathPointIndexToCurrentPathPoint()
         {
-
             for (int i = 1; i < pathPointList.value.Count; i++)
             {
                 if (Vector3.Distance(pathPointList.value[currentPathPoint], transform.position) >
@@ -72,6 +68,11 @@ namespace FPS.EnemyAI
                 currentPathPoint = 0;
             }
             return pathPointList.value[currentPathPoint];
+        }
+
+        public void SetenemyMovePathRoot(EnemyMovePathRoot pathRoot)
+        {
+            enemyMovePathRoot = pathRoot;
         }
     }
 }
