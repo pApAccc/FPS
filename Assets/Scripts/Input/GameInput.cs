@@ -1,7 +1,6 @@
 using FPS.Helper;
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 /// <summary>
 /// 
 /// </summary>

@@ -44,6 +44,7 @@ namespace FPS.Core
 
         private void Dead()
         {
+            //保证死亡一次
             if (!deadOnce)
             {
                 OnDead?.Invoke(this, EventArgs.Empty);

@@ -47,13 +47,13 @@ namespace FPS.EnemyAI
                 FightPlayer();
             }
         }
-
+        //追逐玩家
         private void ChasePlayer()
         {
             enemyMotor.Move(Player.Instance.transform.position, attackRange, chaseSpeed);
             animator.SetBool("Fight", false);
         }
-
+        //攻击玩家
         private void FightPlayer()
         {
             animator.SetBool("Fight", true);

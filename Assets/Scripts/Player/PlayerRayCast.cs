@@ -51,7 +51,6 @@ namespace FPS.Core
                 if (previousInteractObj != null)
                 {
                     previousInteractObj = null;
-
                     OnInterableChanged?.Invoke(this, new OnInterableChangedEventArgs
                     {
                         message = "",

@@ -7,9 +7,9 @@ using UnityEngine;
 /// </summary>
 namespace FPS.Settings
 {
-    public static class Setting
-    {
-        public static int open = Animator.StringToHash("Open");
-        public static int close = Animator.StringToHash("Close");
-    }
+	public static class Setting
+	{
+		public static int toggle = Animator.StringToHash("Toggle");
+
+	}
 }

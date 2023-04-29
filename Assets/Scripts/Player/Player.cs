@@ -10,58 +10,73 @@ using UnityEngine;
 
 namespace FPS.Core
 {
-    public class Player : SingletonMonoBehaviour<Player>
-    {
-        private PlayerController playerController;
-        private PlayerRayCast playerRayCast;
-        private HealthSystem healthSystem;
-        private PlayerWeapon playerWeapon;
+	public class Player : SingletonMonoBehaviour<Player>
+	{
+		public event EventHandler OnPlayerDead;
 
-        public PlayerWeapon PlayerWeapon
-        {
-            get
-            {
-                if (playerWeapon == null) playerWeapon = GetComponent<PlayerWeapon>();
-                return playerWeapon;
-            }
-        }
+		private PlayerController playerController;
+		private PlayerRayCast playerRayCast;
+		private HealthSystem healthSystem;
+		private PlayerWeapon playerWeapon;
 
-        [SerializeField] private HealthBarUI healthBarUI;
-        [SerializeField] private AmmoSO ammoSO;
+		public PlayerWeapon PlayerWeapon
+		{
+			get
+			{
+				if (playerWeapon == null) playerWeapon = GetComponent<PlayerWeapon>();
+				return playerWeapon;
+			}
+		}
 
-        protected override void Awake()
-        {
-            base.Awake();
+		[SerializeField] private HealthBarUI healthBarUI;
+		[SerializeField] private AmmoSO ammoSO;
 
-            playerController = GetComponent<PlayerController>();
-            playerRayCast = GetComponent<PlayerRayCast>();
-            healthSystem = GetComponent<HealthSystem>();
-        }
+		protected override void Awake()
+		{
+			base.Awake();
 
-        private void Start()
-        {
-            //血量系统事件
-            healthSystem.OnHeal += HealthSystem_OnHeal;
-            healthSystem.OnTakeDanage += HealthSystem_OnTakeDanage;
-        }
-        #region 事件注册
+			playerController = GetComponent<PlayerController>();
+			playerRayCast = GetComponent<PlayerRayCast>();
+			healthSystem = GetComponent<HealthSystem>();
+		}
 
-        private void HealthSystem_OnTakeDanage(object sender, System.EventArgs e)
-        {
-            healthBarUI.DamageVisual(healthSystem.GetHealthPrecent());
-        }
+		private void Start()
+		{
+			//血量系统事件
+			healthSystem.OnHeal += HealthSystem_OnHeal;
+			healthSystem.OnTakeDanage += HealthSystem_OnTakeDanage;
+			healthSystem.OnDead += HealthSystem_OnDead;
+		}
 
-        private void HealthSystem_OnHeal(object sender, System.EventArgs e)
-        {
-            healthBarUI.healVisual(healthSystem.GetHealthPrecent());
-        }
+		#region 事件注册
 
-        #endregion
+		private void HealthSystem_OnTakeDanage(object sender, EventArgs e)
+		{
+			healthBarUI.DamageVisual(healthSystem.GetHealthPrecent());
+		}
 
-        public PlayerRayCast GetPlayerRayCast() => playerRayCast;
+		private void HealthSystem_OnHeal(object sender, EventArgs e)
+		{
+			healthBarUI.healVisual(healthSystem.GetHealthPrecent());
+		}
+		private void HealthSystem_OnDead(object sender, EventArgs e)
+		{
+			OnPlayerDead?.Invoke(this, EventArgs.Empty);
+		}
 
-        public HealthSystem GetHealthSystem() => healthSystem;
+		#endregion
 
-        public AmmoSO GetAmmoSO() => ammoSO;
-    }
+		public PlayerRayCast GetPlayerRayCast() => playerRayCast;
+
+		public HealthSystem GetHealthSystem() => healthSystem;
+
+		public AmmoSO GetAmmoSO() => ammoSO;
+
+
+		public void ToggleComponent(bool active)
+		{
+			playerController.enabled = active;
+			playerWeapon.enabled = active;
+		}
+	}
 }

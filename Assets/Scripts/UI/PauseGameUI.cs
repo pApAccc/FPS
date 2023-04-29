@@ -6,56 +6,63 @@ using UnityEngine;
 /// </summary>
 namespace FPS.UI
 {
-    public class PauseGameUI : MonoBehaviour
-    {
-        private bool isShow = true;
-        private bool isGamePause = false;
+	public class PauseGameUI : MonoBehaviour
+	{
+		private bool isShow = true;
+		private bool isGamePause = false;
 
-        [SerializeField] private UnityEngine.UI.Button gameResumeBtn;
-        [SerializeField] private UnityEngine.UI.Button gameQuitBtn;
+		[SerializeField] private UnityEngine.UI.Button gameResumeBtn;
+		[SerializeField] private UnityEngine.UI.Button gameQuitBtn;
 
-        private void Start()
-        {
-            GameInput.Instance.OnPause += Instance_OnPause;
+		private void Start()
+		{
+			GameInput.Instance.OnPause += Instance_OnPause;
 
-            gameResumeBtn.onClick.AddListener(() =>
-            {
-                gameObject.SetActive(false);
-                isShow = !isShow;
-                isGamePause = !isGamePause;
+			gameResumeBtn.onClick.AddListener(() =>
+			{
+				//显示UI
+				gameObject.SetActive(false);
+				isShow = !isShow;
+				isGamePause = !isGamePause;
+				//恢复时间，显示鼠标
+				Time.timeScale = 1;
+				Cursor.visible = false;
+				Cursor.lockState = CursorLockMode.Locked;
+				Player.Instance.ToggleComponent(true);
+			});
 
-                Time.timeScale = 1;
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            });
+			gameQuitBtn.onClick.AddListener(() =>
+			{
+				//退出游戏
+				Application.Quit();
+			});
 
-            gameQuitBtn.onClick.AddListener(() =>
-            {
-                Application.Quit();
-            });
+			gameObject.SetActive(false);
+		}
 
-            gameObject.SetActive(false);
-        }
+		private void Instance_OnPause(object sender, System.EventArgs e)
+		{
+			gameObject.SetActive(isShow);
+			isShow = !isShow;
 
-        private void Instance_OnPause(object sender, System.EventArgs e)
-        {
-            gameObject.SetActive(isShow);
-            isShow = !isShow;
+			if (!isGamePause)
+			{
+				//游戏暂停
+				Time.timeScale = 0;
+				Cursor.visible = true;
+				Cursor.lockState = CursorLockMode.None;
+				Player.Instance.ToggleComponent(false);
+			}
+			else
+			{
+				//游戏继续
+				Time.timeScale = 1;
+				Cursor.visible = false;
+				Cursor.lockState = CursorLockMode.Locked;
+				Player.Instance.ToggleComponent(true);
+			}
+			isGamePause = !isGamePause;
+		}
 
-            if (!isGamePause)
-            {
-                Time.timeScale = 0;
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else
-            {
-                Time.timeScale = 1;
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            isGamePause = !isGamePause;
-        }
-
-    }
+	}
 }

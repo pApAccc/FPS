@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea8b14daae40546934164cd0398f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAngry: 0
   healthBarUI: {fileID: 9198940477170075316}
   chaseDistance: 10
 --- !u!114 &1266380383999559840

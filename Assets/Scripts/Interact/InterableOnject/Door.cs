@@ -6,44 +6,44 @@ using UnityEngine;
 /// </summary>
 namespace FPS.Core
 {
-    public class Door : MonoBehaviour
-    {
-        private Animator animator;
-        private bool isOpen = false;
+	public class Door : MonoBehaviour
+	{
+		private Animator animator;
+		private bool isOpen = false;
 
-        [SerializeField] private Transform enemySpawnPoint;
-        public Transform EnemySpawnPoint
-        {
-            get
-            {
-                return enemySpawnPoint;
-            }
-        }
+		[SerializeField] private Transform enemySpawnPoint;
+		public Transform EnemySpawnPoint
+		{
+			get
+			{
+				return enemySpawnPoint;
+			}
+		}
 
-        private void Awake()
-        {
-            animator = GetComponent<Animator>();
-        }
+		private void Awake()
+		{
+			animator = GetComponent<Animator>();
+		}
 
-        public void ToggleDoor()
-        {
-            if (!isOpen)
-            {
-                animator.SetTrigger(Setting.open);
-            }
-            else
-            {
-                animator.SetTrigger(Setting.close);
-            }
-            isOpen = !isOpen;
-        }
+		public void ToggleDoor()
+		{
+			if (!isOpen)
+			{
+				animator.SetBool(Setting.toggle, true);
+			}
+			else
+			{
+				animator.SetBool(Setting.toggle, false);
+			}
+			isOpen = !isOpen;
+		}
 
-        /// <summary>
-        /// 动画函数
-        /// </summary>
-        private void SetDoorActive()
-        {
-            gameObject.SetActive(isOpen);
-        }
-    }
+		/// <summary>
+		/// 动画函数
+		/// </summary>
+		private void SetDoorActive()
+		{
+			gameObject.SetActive(isOpen);
+		}
+	}
 }

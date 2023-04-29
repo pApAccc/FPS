@@ -1,6 +1,4 @@
-using FPS.Helper;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,20 +42,28 @@ namespace FPS.Helper
             }
         }
 
+        /// <summary>
+        /// 重用物体
+        /// </summary>
+        /// <param name="prefab"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
         public Component GetComponentFromPool(GameObject prefab, Vector3 position, Quaternion rotation)
         {
             int poolKey = prefab.GetInstanceID();
 
+            //如果存在此物体
             if (objectPool.ContainsKey(poolKey))
             {
                 Component objectFromPool = objectPool[poolKey].Dequeue();
                 objectPool[poolKey].Enqueue(objectFromPool);
-
+                //重置
                 if (objectFromPool.gameObject.activeSelf == true)
                 {
                     objectFromPool.gameObject.SetActive(false);
                 }
-
+                //重置位置和旋转
                 objectFromPool.transform.position = position;
                 objectFromPool.transform.rotation = rotation;
 
