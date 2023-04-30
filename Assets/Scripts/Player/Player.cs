@@ -72,11 +72,15 @@ namespace FPS.Core
 
 		public AmmoSO GetAmmoSO() => ammoSO;
 
-
 		public void ToggleComponent(bool active)
 		{
 			playerController.enabled = active;
 			playerWeapon.enabled = active;
+		}
+
+		public bool IsDead()
+		{
+			return healthSystem.IsDead();
 		}
 	}
 }

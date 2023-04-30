@@ -38,9 +38,13 @@ namespace FPS.Core
 
 		private void OnDisable()
 		{
-			GameInput.Instance.OnMouseScrollValueChanged -= Instance_OnMouseScrollValueChanged;
-			GameInput.Instance.OnFire -= Instance_OnFire;
-			GameInput.Instance.OnReload -= Instance_OnReload;
+			//防止GameInput先销毁导致空指针
+			if (GameInput.Instance != null)
+			{
+				GameInput.Instance.OnMouseScrollValueChanged -= Instance_OnMouseScrollValueChanged;
+				GameInput.Instance.OnFire -= Instance_OnFire;
+				GameInput.Instance.OnReload -= Instance_OnReload;
+			}
 		}
 
 		private void Start()

@@ -7,40 +7,31 @@ using UnityEngine;
 /// </summary>
 namespace Common.SavingSystem.Sample
 {
-    public class SavingWrapper : MonoBehaviour
-    {
-        private const string defaultSaveFile = "save";
-        private SavingSystem savingSystem;
-        private void Awake()
-        {
-            savingSystem = GetComponent<SavingSystem>();
-        }
-        private IEnumerator Start()
-        {
-            //可以添加一个淡入效果
-            yield return savingSystem.LoadLastScene(defaultSaveFile);
-        }
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                Load();
-            }
+	public class SavingWrapper : SingletonMonoBehaviour<SavingWrapper>
+	{
+		private const string defaultSaveFile = "save";
+		private SavingSystem savingSystem;
+		protected override void Awake()
+		{
+			base.Awake();
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Save();
-            }
-        }
+			savingSystem = GetComponent<SavingSystem>();
+			Load();
+		}
 
-        public void Save()
-        {
-            savingSystem.Save(defaultSaveFile);
-        }
+		public void Save()
+		{
+			savingSystem.Save(defaultSaveFile);
+		}
 
-        public void Load()
-        {
-            savingSystem.Load(defaultSaveFile);
-        }
-    }
+		public void Load()
+		{
+			savingSystem.Load(defaultSaveFile);
+		}
+
+		private void OnApplicationQuit()
+		{
+			Save();
+		}
+	}
 }

@@ -1,8 +1,10 @@
 using FPS.Core;
 using FPS.FPSResource;
+using FPS.Helper;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// 
@@ -71,8 +73,11 @@ namespace FPS.EnemyAI
 			{
 				amount--;
 				enemySpawnCount++;
-				EnemyPatrolState enemyPatrolState = Instantiate(prefab, door.EnemySpawnPoint.transform.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
+				EnemyPatrolState enemyPatrolState = Instantiate(prefab, door.EnemySpawnPoint.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
+				//EnemyPatrolState enemyPatrolState = GameObjectPool.Instance.GetComponentFromPool(prefab, door.EnemySpawnPoint.transform.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
 				enemyPatrolState.SetenemyMovePathRoot(enemyMovePathRoots[Random.Range(0, enemyMovePathRoots.Count)]);
+				//enemyPatrolState.gameObject.SetActive(true);
+				//enemyPatrolState.GetComponent<HealthSystem>().Revival();
 				//等待
 				yield return new WaitForSeconds(spawnInterval);
 			}

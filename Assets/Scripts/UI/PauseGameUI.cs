@@ -1,5 +1,7 @@
+using Common.SavingSystem.Sample;
 using FPS.Core;
 using UnityEngine;
+using Button = UnityEngine.UI.Button;
 
 /// <summary>
 /// 
@@ -11,8 +13,14 @@ namespace FPS.UI
 		private bool isShow = true;
 		private bool isGamePause = false;
 
-		[SerializeField] private UnityEngine.UI.Button gameResumeBtn;
-		[SerializeField] private UnityEngine.UI.Button gameQuitBtn;
+		[Header("按钮设置")]
+		[Space(10)]
+		[SerializeField] private Button gameResumeBtn;
+		[SerializeField] private Button gameQuitBtn;
+
+		[Header("UI设置")]
+		[Space(10)]
+		[SerializeField] private GameSettingUI gameSettingUI;
 
 		private void Start()
 		{
@@ -35,6 +43,7 @@ namespace FPS.UI
 			{
 				//退出游戏
 				Application.Quit();
+				SavingWrapper.Instance.Save();
 			});
 
 			gameObject.SetActive(false);
@@ -42,6 +51,9 @@ namespace FPS.UI
 
 		private void Instance_OnPause(object sender, System.EventArgs e)
 		{
+			//玩家死亡无法暂停
+			if (Player.Instance.IsDead()) return;
+
 			gameObject.SetActive(isShow);
 			isShow = !isShow;
 

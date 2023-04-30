@@ -45,5 +45,6 @@ namespace FPS.Core
 		{
 			gameObject.SetActive(isOpen);
 		}
+
 	}
 }

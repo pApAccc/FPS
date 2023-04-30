@@ -7,54 +7,56 @@ using UnityEngine;
 
 namespace FPS.Core
 {
-    public class HealthSystem : MonoBehaviour, IDamagable
-    {
-        public event EventHandler OnTakeDanage;
-        public event EventHandler OnHeal;
-        public event EventHandler OnDead;
+	public class HealthSystem : MonoBehaviour, IDamagable
+	{
+		public event EventHandler OnTakeDanage;
+		public event EventHandler OnHeal;
+		public event EventHandler OnDead;
 
-        private float currentHealth;
-        private bool deadOnce = false;
+		private float currentHealth;
+		private bool deadOnce = false;
 
-        [SerializeField] private float maxHealth = 100;
+		[SerializeField] private float maxHealth = 100;
 
-        private void Awake()
-        {
-            currentHealth = maxHealth;
-        }
+		private void Awake()
+		{
+			currentHealth = maxHealth;
+		}
 
-        public void TakeDamage(float amount)
-        {
-            currentHealth -= amount;
-            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-            OnTakeDanage?.Invoke(this, EventArgs.Empty);
+		public void TakeDamage(float amount)
+		{
+			currentHealth -= amount;
+			currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+			OnTakeDanage?.Invoke(this, EventArgs.Empty);
 
-            if (currentHealth <= 0)
-            {
-                Dead();
-            }
-        }
+			if (currentHealth <= 0)
+			{
+				Dead();
+			}
+		}
 
-        public void Heal(int amount)
-        {
-            currentHealth += amount;
-            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-            OnHeal?.Invoke(this, EventArgs.Empty);
-        }
+		public void Heal(int amount)
+		{
+			currentHealth += amount;
+			currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+			OnHeal?.Invoke(this, EventArgs.Empty);
+		}
 
-        private void Dead()
-        {
-            //保证死亡一次
-            if (!deadOnce)
-            {
-                OnDead?.Invoke(this, EventArgs.Empty);
-                deadOnce = true;
-            }
-        }
+		private void Dead()
+		{
+			//保证死亡一次
+			if (!deadOnce)
+			{
+				OnDead?.Invoke(this, EventArgs.Empty);
+				deadOnce = true;
+			}
+		}
 
-        public float GetHealthPrecent() => currentHealth / maxHealth;
+		public float GetHealthPrecent() => currentHealth / maxHealth;
 
-    }
+		public bool IsDead() => deadOnce;
+
+	}
 }
 
 

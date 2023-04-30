@@ -11,5 +11,8 @@ namespace FPS.Settings
 	{
 		public static int toggle = Animator.StringToHash("Toggle");
 
+
+
+
 	}
 }
