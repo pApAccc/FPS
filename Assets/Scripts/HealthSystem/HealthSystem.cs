@@ -16,6 +16,8 @@ namespace FPS.Core
 		private float currentHealth;
 		private bool deadOnce = false;
 
+		private GameObject hitSource;
+
 		[SerializeField] private float maxHealth = 100;
 
 		private void Awake()
@@ -23,12 +25,15 @@ namespace FPS.Core
 			currentHealth = maxHealth;
 		}
 
-		public void TakeDamage(float amount)
+		public void TakeDamage(GameObject hitSource, float amount)
 		{
 			currentHealth -= amount;
 			currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+			this.hitSource = hitSource;
+
 			OnTakeDanage?.Invoke(this, EventArgs.Empty);
 
+			//判断死亡
 			if (currentHealth <= 0)
 			{
 				Dead();
@@ -56,7 +61,10 @@ namespace FPS.Core
 
 		public bool IsDead() => deadOnce;
 
+		public void ClearHitSource() => hitSource = null;
+
 	}
+
 }
 
 

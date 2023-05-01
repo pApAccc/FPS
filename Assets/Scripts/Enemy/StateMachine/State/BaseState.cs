@@ -7,12 +7,12 @@ using UnityEngine;
 /// </summary>
 namespace FPS.EnemyAI
 {
-    public abstract class BaseState : MonoBehaviour
-    {
-        public abstract void Enter();
-        public abstract void Perform();
-        public abstract void Exit();
-    }
+	public abstract class BaseState : MonoBehaviour
+	{
+		public abstract void Enter();
+		public abstract void Perform();
+		public abstract void Exit();
+	}
 }
 
 

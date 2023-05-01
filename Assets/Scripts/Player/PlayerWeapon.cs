@@ -65,7 +65,7 @@ namespace FPS.Core
 		/// <param name="e"></param>
 		private void Instance_OnFire(object sender, EventArgs e)
 		{
-			if (currentWeapon.TryShoot())
+			if (currentWeapon.TryShoot(gameObject))
 			{
 				//更新UI相关元素
 				OnShoot?.Invoke(this, new OnShootEventArgs

@@ -1,6 +1,7 @@
 using FPS.Core;
 using FPS.FPSResource;
 using FPS.Helper;
+using FPS.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,16 +14,21 @@ namespace FPS.EnemyAI
 {
 	public class EnemySpawner : MonoBehaviour
 	{
-		private int wave = 0;
+		private int wave = 1;
+		//当前波次，需要诞生的敌人数
 		private int enemySpawnCount = 0;
+		//当前波次，敌人已经诞生的数量
+		private int enemyAlreadySpwanedCount = 0;
 		private Door chooseDoor;
-		private bool once = true;
+		private bool resume = true;
+		private float waitTime = 1.5f;
 
 		[Range(0, 5)][SerializeField] private int maxEnemySpawnWave = 5;
 		[SerializeField] private float spawnInterval = 2;
 		[SerializeField] private List<GameObject> enemyPrefabs;
 		[SerializeField] private List<Door> enemyDoorlist;
 		[SerializeField] private List<EnemyMovePathRoot> enemyMovePathRoots;
+		[SerializeField] private NextWaveUI nextWaveUI;
 
 		private void Start()
 		{
@@ -31,58 +37,52 @@ namespace FPS.EnemyAI
 
 		private void EnemyAI_OnAllEnemyDead(object sender, System.EventArgs e)
 		{
-			enemySpawnCount--;
-
-			if (enemySpawnCount == 0)
+			//所有敌人已经死亡
+			if (enemySpawnCount == enemyAlreadySpwanedCount)
 			{
-				once = true;
+				//关门
+				chooseDoor.ToggleDoor(false);
+				////暂时等待一会
+				StartCoroutine(WaitForNextWave());
 			}
 		}
 
 		private void Update()
 		{
-			//没有敌人则诞生敌人
-			if (enemySpawnCount == 0)
-			{
-				DoorOpen();
-			}
-			//每过三波恢复玩家弹药和血量
-			if (wave % 3 == 0 && once)
-			{
-				Player.Instance.GetHealthSystem().Heal(30);
-				GameResource.Instance.ammoSO.FillAmmo();
-				once = false;
-			}
+			if (!resume) return;
+
+			StartCoroutine(DoorOpen());
+			resume = false;
 		}
 
-		private void DoorOpen()
+		private IEnumerator DoorOpen()
 		{
+			yield return nextWaveUI.ShowUI(wave);
 			wave++;
 			chooseDoor = ChooseRandomDoor();
 			//开关门
-			chooseDoor.ToggleDoor();
+			chooseDoor.ToggleDoor(true);
 			//开始诞生敌人
-			StartCoroutine(SpawnEnemy(chooseDoor));
+			yield return (SpawnEnemy(chooseDoor));
 		}
 
 		private IEnumerator SpawnEnemy(Door door)
 		{
 			GetRandomEnemy(out int amount, out GameObject prefab);
+			enemySpawnCount = amount;
+			enemyAlreadySpwanedCount = 0;
 			//如果还能诞生敌人
 			while (amount > 0)
 			{
 				amount--;
-				enemySpawnCount++;
+				enemyAlreadySpwanedCount++;
 				EnemyPatrolState enemyPatrolState = Instantiate(prefab, door.EnemySpawnPoint.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
-				//EnemyPatrolState enemyPatrolState = GameObjectPool.Instance.GetComponentFromPool(prefab, door.EnemySpawnPoint.transform.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
 				enemyPatrolState.SetenemyMovePathRoot(enemyMovePathRoots[Random.Range(0, enemyMovePathRoots.Count)]);
-				//enemyPatrolState.gameObject.SetActive(true);
-				//enemyPatrolState.GetComponent<HealthSystem>().Revival();
+
 				//等待
 				yield return new WaitForSeconds(spawnInterval);
 			}
-
-			chooseDoor.ToggleDoor();
+			chooseDoor.ToggleDoor(false);
 		}
 
 		/// <summary>
@@ -106,6 +106,12 @@ namespace FPS.EnemyAI
 			amount = Random.Range(enenmyWave, enenmyWave * 2);
 			//选择敌人
 			prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+		}
+
+		private IEnumerator WaitForNextWave()
+		{
+			yield return new WaitForSeconds(waitTime);
+			resume = true;
 		}
 
 	}

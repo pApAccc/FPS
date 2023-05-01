@@ -25,17 +25,10 @@ namespace FPS.Core
 			animator = GetComponent<Animator>();
 		}
 
-		public void ToggleDoor()
+		public void ToggleDoor(bool isOpen)
 		{
-			if (!isOpen)
-			{
-				animator.SetBool(Setting.toggle, true);
-			}
-			else
-			{
-				animator.SetBool(Setting.toggle, false);
-			}
-			isOpen = !isOpen;
+			animator.SetBool(Setting.toggle, isOpen);
+			this.isOpen = isOpen;
 		}
 
 		/// <summary>
@@ -45,6 +38,8 @@ namespace FPS.Core
 		{
 			gameObject.SetActive(isOpen);
 		}
+
+		public bool IsDoorOpen() => isOpen;
 
 	}
 }

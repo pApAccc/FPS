@@ -8,33 +8,31 @@ using UnityEngine;
 
 namespace FPS.EnemyAI
 {
-    public class StateMachine : MonoBehaviour
-    {
-        private BaseState activeState;
+	public class StateMachine : MonoBehaviour
+	{
+		private BaseState activeState;
 
-        private void Update()
-        {
-            if (activeState != null)
-            {
-                activeState.Perform();
-            }
-        }
+		private void Update()
+		{
+			if (activeState != null)
+			{
+				activeState.Perform();
+			}
+		}
 
-        public void ChangeState(BaseState state)
-        {
-            //切换的状态为空 
-            if (state == null) return;
-            //并没有切换状态
-            if (activeState == state) return;
+		public void ChangeState(BaseState state)
+		{
+			//切换的状态为空 
+			if (state == null) return;
+			//并没有切换状态
+			if (activeState == state) return;
 
-            //切换状态
-            if (activeState != null) activeState.Exit();
-            activeState = state;
-            activeState.Enter();
-        }
-
-        public BaseState GetActiveState() => activeState;
-    }
+			//切换状态
+			if (activeState != null) activeState.Exit();
+			activeState = state;
+			activeState.Enter();
+		}
+	}
 
 }
 

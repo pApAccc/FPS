@@ -85,6 +85,11 @@ PrefabInstance:
     - target: {fileID: 1266380383999559851, guid: 4430c17dfce7d964795675f11b63b24f,
         type: 3}
       propertyPath: isAngry
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266380383999559851, guid: 4430c17dfce7d964795675f11b63b24f,
+        type: 3}
+      propertyPath: isAlwaysAngry
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:

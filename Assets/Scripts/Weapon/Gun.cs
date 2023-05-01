@@ -88,7 +88,7 @@ namespace FPS.Weapon
 			}
 		}
 
-		public bool TryShoot()
+		public bool TryShoot(GameObject hitSource)
 		{
 			if (shootTimer <= 0 && canShoot && remainAmmo > 0)
 			{
@@ -104,7 +104,7 @@ namespace FPS.Weapon
 
 				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, maxShootRange, shootLayerMask))
 				{
-					hit.transform.GetComponentInParent<IDamagable>()?.TakeDamage(damage);
+					hit.transform.GetComponentInParent<IDamagable>()?.TakeDamage(hitSource, damage);
 					Component hitEffectComponent = GameObjectPool.Instance.GetComponentFromPool(shootHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
 					hitEffectComponent.gameObject.SetActive(true);
 				}

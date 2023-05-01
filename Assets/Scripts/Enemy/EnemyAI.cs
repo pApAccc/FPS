@@ -1,6 +1,7 @@
 using FPS.Core;
 using FPS.UI;
 using System;
+using System.Collections;
 using UnityEngine;
 /// <summary>
 /// 
@@ -18,10 +19,18 @@ namespace FPS.EnemyAI
 		private EnemyPatrolState enemyPatrolState;
 		private EnemyFightState enemyFightState;
 		private HealthSystem healthSystem;
+		//是否被挑衅
+		private bool provoked = false;
+		private Coroutine angryCoroutine;
 
 		[SerializeField] private bool isAngry = false;
+		[SerializeField] private bool isAlwaysAngry = false;
+		[Tooltip("如果被玩家击中则进入愤怒状态的时间")]
+		[SerializeField] private float angryTimer = 5f;
 		[SerializeField] private HealthBarUI healthBarUI;
+		[Tooltip("在此范围内就会追击玩家")]
 		[SerializeField] private float chaseDistance = 10;
+
 
 		private void Awake()
 		{
@@ -43,7 +52,6 @@ namespace FPS.EnemyAI
 			healthSystem.OnHeal += HealthSystem_OnHeal;
 		}
 
-
 		#region 注册事件
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
@@ -53,6 +61,8 @@ namespace FPS.EnemyAI
 		}
 		private void HealthSystem_OnTakeDanage(object sender, EventArgs e)
 		{
+			provoked = true;
+
 			healthBarUI.DamageVisual(healthSystem.GetHealthPrecent());
 
 			//显示血量UI
@@ -62,7 +72,7 @@ namespace FPS.EnemyAI
 			}
 		}
 
-		private void HealthSystem_OnHeal(object sender, System.EventArgs e)
+		private void HealthSystem_OnHeal(object sender, EventArgs e)
 		{
 			healthBarUI.healVisual(healthSystem.GetHealthPrecent());
 
@@ -81,6 +91,23 @@ namespace FPS.EnemyAI
 				stateMachine.ChangeState(enemyFightState);
 				return;
 			}
+			if (isAlwaysAngry) return;
+
+			//被玩家击中
+			if (provoked)
+			{
+				if (angryCoroutine != null)
+				{
+					angryCoroutine = StartCoroutine(Angry());
+				}
+				else
+				{
+					angryCoroutine = null;
+					angryCoroutine = StartCoroutine(Angry());
+				}
+				isAngry = true;
+				provoked = false;
+			}
 
 			//与玩家距离小于chaseDistance时，改变状态
 			if (Vector3.Distance(transform.position, Player.Instance.transform.position) < chaseDistance)
@@ -92,10 +119,24 @@ namespace FPS.EnemyAI
 			{
 				stateMachine.ChangeState(enemyPatrolState);
 			}
+		}
 
+		private IEnumerator Angry()
+		{
+			float timer = angryTimer;
+			while (true)
+			{
+				timer -= Time.deltaTime;
+				yield return null;
+
+				if (timer <= 0)
+				{
+					isAngry = false;
+					break;
+				}
+			}
 		}
 	}
-
 }
 
 
