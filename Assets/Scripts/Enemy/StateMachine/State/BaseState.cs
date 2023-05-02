@@ -9,7 +9,7 @@ namespace FPS.EnemyAI
 {
 	public abstract class BaseState : MonoBehaviour
 	{
-		public abstract void Enter();
+		public abstract void Enter(EnemyDetail enemyDetail);
 		public abstract void Perform();
 		public abstract void Exit();
 	}

@@ -3,13 +3,13 @@ using FPS.UI;
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 /// <summary>
 /// 
 /// </summary>
 
 namespace FPS.EnemyAI
 {
-
 	public class EnemyAI : MonoBehaviour
 	{
 		public static event EventHandler OnAllEnemyDead;
@@ -22,6 +22,8 @@ namespace FPS.EnemyAI
 		//是否被挑衅
 		private bool provoked = false;
 		private Coroutine angryCoroutine;
+		private EnemyDetail enemyDetail;
+		private int level;
 
 		[SerializeField] private bool isAngry = false;
 		[SerializeField] private bool isAlwaysAngry = false;
@@ -45,11 +47,19 @@ namespace FPS.EnemyAI
 
 		private void Start()
 		{
-			stateMachine.ChangeState(enemyPatrolState);
-
 			healthSystem.OnDead += HealthSystem_OnDead;
 			healthSystem.OnTakeDanage += HealthSystem_OnTakeDanage;
 			healthSystem.OnHeal += HealthSystem_OnHeal;
+
+			//根据wave随机等级
+			int currentWave = EnemySpawner.Instance.GetWaveWithConstraint() + 1;//range不包括右值
+			int deviation = Random.Range(0, 3);
+			level = Random.Range(currentWave - deviation <= 0 ? 1 : currentWave - deviation, currentWave);
+			enemyDetail = new EnemyDetail(level);
+			transform.localScale = new Vector3(enemyDetail.Scale, enemyDetail.Scale, enemyDetail.Scale);
+			healthSystem.SetMaxHealth(enemyDetail.Health);
+
+			stateMachine.ChangeState(enemyPatrolState, enemyDetail);
 		}
 
 		#region 注册事件
@@ -88,12 +98,12 @@ namespace FPS.EnemyAI
 		{
 			if (isAngry)
 			{
-				stateMachine.ChangeState(enemyFightState);
+				stateMachine.ChangeState(enemyFightState, enemyDetail);
 				return;
 			}
 			if (isAlwaysAngry) return;
 
-			//被玩家击中
+			//被激怒(玩家射击，玩家过于接近敌人)
 			if (provoked)
 			{
 				if (angryCoroutine != null)
@@ -112,12 +122,13 @@ namespace FPS.EnemyAI
 			//与玩家距离小于chaseDistance时，改变状态
 			if (Vector3.Distance(transform.position, Player.Instance.transform.position) < chaseDistance)
 			{
-				stateMachine.ChangeState(enemyFightState);
+				stateMachine.ChangeState(enemyFightState, enemyDetail);
+				provoked = true;
 			}
 			//不然切换回巡逻
 			else
 			{
-				stateMachine.ChangeState(enemyPatrolState);
+				stateMachine.ChangeState(enemyPatrolState, enemyDetail);
 			}
 		}
 

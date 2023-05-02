@@ -23,6 +23,10 @@ namespace FPS.Weapon
 		private float maxShootRange;
 		private GameObject shootEffect;
 		private GameObject shootHitEffect;
+		private WeaponShootScope shootScope;
+		private float range;
+		//武器可以造成伤害的层
+		private LayerMask shootDamageLayerMask;
 
 		//武器子弹设置
 		private int ammoCapcity;
@@ -30,6 +34,8 @@ namespace FPS.Weapon
 		private float reloadTimerMax;
 		private float reloadTimer = 0;
 		private AmmoType ammoType;
+		private GameObject bullet;
+		private float moveTime;
 
 		//音效
 		private AudioClip shootAudioClip;
@@ -40,8 +46,10 @@ namespace FPS.Weapon
 		private Dictionary<AmmoType, int> ammoDictionary;
 		private Action onReloadCompleted;
 
+		[Tooltip("武器可以命中的层")]
+		[SerializeField] private LayerMask shootVisualLayerMask;
 		[SerializeField] private Transform shootPosition;
-		[SerializeField] private LayerMask shootLayerMask;
+
 		protected void Awake()
 		{
 			animator = GetComponentInChildren<Animator>();
@@ -55,11 +63,16 @@ namespace FPS.Weapon
 			maxShootRange = weaponSO.maxShootRange;
 			shootEffect = weaponSO.shootEffect;
 			shootHitEffect = weaponSO.shootHitEffect;
+			shootScope = weaponSO.shootScope;
+			range = weaponSO.range;
+			shootDamageLayerMask = weaponSO.shootDamageLayerMask;
 
 			ammoCapcity = weaponSO.ammoCapcity;
 			remainAmmo = ammoCapcity;
 			ammoType = weaponSO.ammoType;
 			reloadTimerMax = weaponSO.reloadTimer;
+			bullet = weaponSO.bullet;
+			moveTime = weaponSO.moveTime;
 
 			shootAudioClip = weaponSO.shootAudioClip;
 			lowPitch = weaponSO.lowPitch;
@@ -102,11 +115,34 @@ namespace FPS.Weapon
 				Component flashComponent = GameObjectPool.Instance.GetComponentFromPool(shootEffect, shootPosition.position, Quaternion.identity);
 				flashComponent.gameObject.SetActive(true);
 
-				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, maxShootRange, shootLayerMask))
+				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, maxShootRange, shootVisualLayerMask))
 				{
-					hit.transform.GetComponentInParent<IDamagable>()?.TakeDamage(hitSource, damage);
-					Component hitEffectComponent = GameObjectPool.Instance.GetComponentFromPool(shootHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
-					hitEffectComponent.gameObject.SetActive(true);
+					Bullet bulletComponent = GameObjectPool.Instance.GetComponentFromPool(bullet, shootPosition.position, Quaternion.identity) as Bullet;
+					bulletComponent.gameObject.SetActive(true);
+
+					Action onMoveOver = () =>
+					{
+						//如果武器是范围伤害
+						if (WeaponShootScope.Scope == shootScope)
+						{
+							Collider[] colliders = Physics.OverlapSphere(hit.point, range, shootDamageLayerMask);
+							foreach (Collider collider in colliders)
+							{
+								collider.GetComponentInParent<IDamagable>()?.TakeDamage(hitSource, damage);
+							}
+						}
+						//如果武器是单体伤害
+						else if (WeaponShootScope.Single == shootScope)
+						{
+							hit.transform.GetComponentInParent<IDamagable>()?.TakeDamage(hitSource, damage);
+						}
+						//诞生特效
+						Component hitEffectComponent = GameObjectPool.Instance.GetComponentFromPool(shootHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+						hitEffectComponent.gameObject.SetActive(true);
+					};
+
+					bulletComponent.Move(moveTime, transform.position, hit.point, onMoveOver);
+
 				}
 
 				//重置射击间隔

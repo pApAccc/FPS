@@ -1,6 +1,8 @@
 using FPS.Core;
+using FPS.EnemyAI;
 using FPS.Helper;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
 
@@ -11,6 +13,7 @@ namespace FPS.UI
 {
 	public class PlayerDeadUI : MonoBehaviour
 	{
+		[SerializeField] private TextMeshProUGUI waveText;
 		[SerializeField] private Button restartBtn;
 		[SerializeField] private Button menuBtn;
 		[SerializeField] private Button quitBtn;
@@ -58,6 +61,8 @@ namespace FPS.UI
 			Player.Instance.ToggleComponent(false);
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
+			waveText.text = $"你存活了 <color=red>{EnemySpawner.Instance.GetWave()}</color> 波";
+
 			StartCoroutine(DisplayCanvas());
 		}
 

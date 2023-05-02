@@ -6,24 +6,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static Cinemachine.DocumentationSortingAttribute;
 
 /// <summary>
 /// 
 /// </summary>
 namespace FPS.EnemyAI
 {
-	public class EnemySpawner : MonoBehaviour
+	public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
 	{
+		private const int minWaveSpawnEnemy = 1;
+		private const int maxWaveSpawnEnemy = 10;
+
 		private int wave = 1;
 		//当前波次，需要诞生的敌人数
-		private int enemySpawnCount = 0;
+		private int enemyToSpawnCount = 0;
 		//当前波次，敌人已经诞生的数量
-		private int enemyAlreadySpwanedCount = 0;
+		private int enemyAlreadyDeadCount = 0;
 		private Door chooseDoor;
 		private bool resume = true;
 		private float waitTime = 1.5f;
 
-		[Range(0, 5)][SerializeField] private int maxEnemySpawnWave = 5;
+		[SerializeField] private int maxEnemySpawnWave = 20;
 		[SerializeField] private float spawnInterval = 2;
 		[SerializeField] private List<GameObject> enemyPrefabs;
 		[SerializeField] private List<Door> enemyDoorlist;
@@ -37,11 +41,13 @@ namespace FPS.EnemyAI
 
 		private void EnemyAI_OnAllEnemyDead(object sender, System.EventArgs e)
 		{
+			enemyAlreadyDeadCount++;
 			//所有敌人已经死亡
-			if (enemySpawnCount == enemyAlreadySpwanedCount)
+			if (enemyToSpawnCount == enemyAlreadyDeadCount)
 			{
 				//关门
 				chooseDoor.ToggleDoor(false);
+				wave++;
 				////暂时等待一会
 				StartCoroutine(WaitForNextWave());
 			}
@@ -58,7 +64,6 @@ namespace FPS.EnemyAI
 		private IEnumerator DoorOpen()
 		{
 			yield return nextWaveUI.ShowUI(wave);
-			wave++;
 			chooseDoor = ChooseRandomDoor();
 			//开关门
 			chooseDoor.ToggleDoor(true);
@@ -68,14 +73,26 @@ namespace FPS.EnemyAI
 
 		private IEnumerator SpawnEnemy(Door door)
 		{
-			GetRandomEnemy(out int amount, out GameObject prefab);
-			enemySpawnCount = amount;
-			enemyAlreadySpwanedCount = 0;
+			bool spawnOnlyOneTypeEnemy = 1 == Random.Range(0, 2);
+			int amount = GetRandomAmountEnemy();
+			enemyToSpawnCount = amount;
+			enemyAlreadyDeadCount = 0;
+			GameObject prefab = null;
+			//如果为真，随机一种敌人诞生
+			if (spawnOnlyOneTypeEnemy)
+			{
+				prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+			}
 			//如果还能诞生敌人
 			while (amount > 0)
 			{
+				//如果为假，每次随机不同敌人
+				if (!spawnOnlyOneTypeEnemy)
+				{
+					prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+				}
+
 				amount--;
-				enemyAlreadySpwanedCount++;
 				EnemyPatrolState enemyPatrolState = Instantiate(prefab, door.EnemySpawnPoint.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
 				enemyPatrolState.SetenemyMovePathRoot(enemyMovePathRoots[Random.Range(0, enemyMovePathRoots.Count)]);
 
@@ -100,12 +117,12 @@ namespace FPS.EnemyAI
 		/// </summary>
 		/// <param name="amount"></param>
 		/// <param name="prefab"></param>
-		private void GetRandomEnemy(out int amount, out GameObject prefab)
+		private int GetRandomAmountEnemy()
 		{
-			int enenmyWave = wave < maxEnemySpawnWave ? wave : maxEnemySpawnWave;
-			amount = Random.Range(enenmyWave, enenmyWave * 2);
-			//选择敌人
-			prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+			//从当前wave到maxwave间随机取数，取到的就是诞生敌人数
+			int enenmyWave = GetWaveWithConstraint() + 1;
+			int deviation = Random.Range(0, 3);
+			return Random.Range(enenmyWave - deviation <= 0 ? 1 : enenmyWave - deviation, enenmyWave);
 		}
 
 		private IEnumerator WaitForNextWave()
@@ -114,5 +131,11 @@ namespace FPS.EnemyAI
 			resume = true;
 		}
 
+		public int GetWave() => wave;
+
+		public int GetWaveWithConstraint()
+		{
+			return wave <= maxEnemySpawnWave ? wave : maxEnemySpawnWave;
+		}
 	}
 }

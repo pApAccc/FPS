@@ -93,7 +93,7 @@ SphereCollider:
   m_GameObject: {fileID: 1266380382701151214}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -287,7 +287,7 @@ SphereCollider:
   m_GameObject: {fileID: 1266380383432673186}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -391,7 +391,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyMovePathRoot: {fileID: 0}
-  patrolSpeed: 8
 --- !u!114 &1266380383999559851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,9 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229128791d8191143b607e0d144048bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
-  attackRange: 5
-  chaseSpeed: 8
   leftEye: {fileID: 1266380383432673186}
   rightEye: {fileID: 1266380382701151214}
 --- !u!114 &1266380383999559841

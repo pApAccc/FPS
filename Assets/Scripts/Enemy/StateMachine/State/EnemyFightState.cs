@@ -12,9 +12,9 @@ namespace FPS.EnemyAI
 		private Animator animator;
 		private EnemyMotor enemyMotor;
 
-		[SerializeField] private float damage = 15;
-		[SerializeField] private float attackRange = 5;
-		[SerializeField] private float chaseSpeed = 3.5f;
+		private float damage = 15;
+		private float chaseSpeed = 3.5f;
+		private float attackRange = 5;
 		[SerializeField] private GameObject leftEye;
 		[SerializeField] private GameObject rightEye;
 
@@ -25,9 +25,13 @@ namespace FPS.EnemyAI
 			animator = GetComponent<Animator>();
 		}
 
-		public override void Enter()
+		public override void Enter(EnemyDetail enemyDetail)
 		{
 			ChangeEyeColor(Color.red);
+
+			damage = enemyDetail.Damage;
+			chaseSpeed = enemyDetail.MoveSpeed;
+			attackRange = enemyDetail.AttackRange;
 		}
 
 		public override void Perform()

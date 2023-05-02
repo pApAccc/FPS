@@ -20,7 +20,7 @@ namespace FPS.EnemyAI
 			}
 		}
 
-		public void ChangeState(BaseState state)
+		public void ChangeState(BaseState state, EnemyDetail enemyDetail)
 		{
 			//切换的状态为空 
 			if (state == null) return;
@@ -30,7 +30,7 @@ namespace FPS.EnemyAI
 			//切换状态
 			if (activeState != null) activeState.Exit();
 			activeState = state;
-			activeState.Enter();
+			activeState.Enter(enemyDetail);
 		}
 	}
 

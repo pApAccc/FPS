@@ -164,10 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b2f3098d3e4d046a96807279fc3815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootPosition: {fileID: 7579294530425648685}
-  shootLayerMask:
+  shootVisualLayerMask:
     serializedVersion: 2
     m_Bits: 448
+  shootPosition: {fileID: 7579294530425648685}
 --- !u!1 &100006
 GameObject:
   m_ObjectHideFlags: 0

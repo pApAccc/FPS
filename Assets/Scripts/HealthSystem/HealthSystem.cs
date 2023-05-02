@@ -63,6 +63,12 @@ namespace FPS.Core
 
 		public void ClearHitSource() => hitSource = null;
 
+		public void SetMaxHealth(int healthAmount)
+		{
+			maxHealth = healthAmount;
+			currentHealth = healthAmount;
+		}
+
 	}
 
 }

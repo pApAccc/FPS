@@ -14,8 +14,8 @@ namespace FPS.EnemyAI
 		private int currentPathPoint = 0;
 		private EnemyMotor enemyMotor;
 
-		[SerializeField] EnemyMovePathRoot enemyMovePathRoot;
-		[SerializeField] float patrolSpeed = 3.5f;
+		[SerializeField] private EnemyMovePathRoot enemyMovePathRoot;
+		private float patrolSpeed;
 
 		private void Awake()
 		{
@@ -23,10 +23,11 @@ namespace FPS.EnemyAI
 			pathPointList = new LazyValue<List<Vector3>>(() => enemyMovePathRoot.GetPath());
 		}
 
-		public override void Enter()
+		public override void Enter(EnemyDetail enemyDetail)
 		{
 			//查找并前往最近的寻路点
 			SetNearestPathPointIndexToCurrentPathPoint();
+			patrolSpeed = enemyDetail.MoveSpeed;
 			enemyMotor.Move(pathPointList.value[currentPathPoint], 0, patrolSpeed);
 		}
 
