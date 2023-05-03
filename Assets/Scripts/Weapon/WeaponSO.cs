@@ -33,7 +33,7 @@ namespace FPS.Weapon
 		public GameObject bullet;
 		public int ammoCapcity = 7;
 		public float reloadTimer = 1;
-		public float moveTime = .2f;
+		public float moveSpeed = .2f;
 		public AmmoType ammoType;
 
 

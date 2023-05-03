@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace FPS.Core
 {
-    public abstract class InterableObject : MonoBehaviour
-    {
+	public abstract class InterableObject : MonoBehaviour
+	{
 
-        public string message;
-        public abstract void Interact();
-    }
+		public string message;
+		public abstract void Interact();
+	}
 }
 
 

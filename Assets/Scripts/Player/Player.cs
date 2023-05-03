@@ -76,6 +76,7 @@ namespace FPS.Core
 		{
 			playerController.enabled = active;
 			playerWeapon.enabled = active;
+			playerRayCast.enabled = active;
 		}
 
 		public bool IsDead()

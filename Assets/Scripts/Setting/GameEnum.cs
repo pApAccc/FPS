@@ -22,5 +22,13 @@ namespace FPS.Settings
 		Scope
 	}
 
+	public enum GameState
+	{
+		GameResume,
+		GamePause,
+		GameOver
+	}
+
+
 
 }

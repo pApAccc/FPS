@@ -1,12 +1,9 @@
 using FPS.Core;
-using FPS.FPSResource;
 using FPS.Helper;
 using FPS.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using static Cinemachine.DocumentationSortingAttribute;
 
 /// <summary>
 /// 
@@ -15,9 +12,6 @@ namespace FPS.EnemyAI
 {
 	public class EnemySpawner : SingletonMonoBehaviour<EnemySpawner>
 	{
-		private const int minWaveSpawnEnemy = 1;
-		private const int maxWaveSpawnEnemy = 10;
-
 		private int wave = 1;
 		//当前波次，需要诞生的敌人数
 		private int enemyToSpawnCount = 0;
@@ -27,6 +21,7 @@ namespace FPS.EnemyAI
 		private bool resume = true;
 		private float waitTime = 1.5f;
 
+		[Tooltip("最大敌人诞生波次，当波次超过此波次后敌人将基于此数值诞生敌人")]
 		[SerializeField] private int maxEnemySpawnWave = 20;
 		[SerializeField] private float spawnInterval = 2;
 		[SerializeField] private List<GameObject> enemyPrefabs;

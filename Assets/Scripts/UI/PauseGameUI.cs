@@ -10,8 +10,7 @@ namespace FPS.UI
 {
 	public class PauseGameUI : MonoBehaviour
 	{
-		private bool isShow = true;
-		private bool isGamePause = false;
+		private bool isShow = false;
 
 		[Header("按钮设置")]
 		[Space(10)]
@@ -24,19 +23,16 @@ namespace FPS.UI
 
 		private void Start()
 		{
-			GameInput.Instance.OnPause += Instance_OnPause;
+			GameManager.Instance.OnGamePuase += GameManager_OnGamePuase;
 
 			gameResumeBtn.onClick.AddListener(() =>
 			{
-				//显示UI
+				//关闭UI
 				gameObject.SetActive(false);
-				isShow = !isShow;
-				isGamePause = !isGamePause;
+				isShow = false;
+
 				//恢复时间，显示鼠标
-				Time.timeScale = 1;
-				Cursor.visible = false;
-				Cursor.lockState = CursorLockMode.Locked;
-				Player.Instance.ToggleComponent(true);
+				GameManager.Instance.GameState = Settings.GameState.GameResume;
 			});
 
 			gameQuitBtn.onClick.AddListener(() =>
@@ -49,31 +45,18 @@ namespace FPS.UI
 			gameObject.SetActive(false);
 		}
 
-		private void Instance_OnPause(object sender, System.EventArgs e)
+		private void GameManager_OnGamePuase(object sender, OnGamePuaseEventArgs e)
 		{
 			//玩家死亡无法暂停
 			if (Player.Instance.IsDead()) return;
 
-			gameObject.SetActive(isShow);
 			isShow = !isShow;
+			gameObject.SetActive(isShow);
 
-			if (!isGamePause)
-			{
-				//游戏暂停
-				Time.timeScale = 0;
-				Cursor.visible = true;
-				Cursor.lockState = CursorLockMode.None;
-				Player.Instance.ToggleComponent(false);
-			}
+			if (isShow)
+				GameManager.Instance.GameState = Settings.GameState.GamePause;
 			else
-			{
-				//游戏继续
-				Time.timeScale = 1;
-				Cursor.visible = false;
-				Cursor.lockState = CursorLockMode.Locked;
-				Player.Instance.ToggleComponent(true);
-			}
-			isGamePause = !isGamePause;
+				GameManager.Instance.GameState = Settings.GameState.GameResume;
 		}
 
 	}

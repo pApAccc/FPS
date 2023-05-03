@@ -35,7 +35,7 @@ namespace FPS.Weapon
 		private float reloadTimer = 0;
 		private AmmoType ammoType;
 		private GameObject bullet;
-		private float moveTime;
+		private float moveSpeed;
 
 		//音效
 		private AudioClip shootAudioClip;
@@ -72,7 +72,7 @@ namespace FPS.Weapon
 			ammoType = weaponSO.ammoType;
 			reloadTimerMax = weaponSO.reloadTimer;
 			bullet = weaponSO.bullet;
-			moveTime = weaponSO.moveTime;
+			moveSpeed = weaponSO.moveSpeed;
 
 			shootAudioClip = weaponSO.shootAudioClip;
 			lowPitch = weaponSO.lowPitch;
@@ -118,7 +118,6 @@ namespace FPS.Weapon
 				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, maxShootRange, shootVisualLayerMask))
 				{
 					Bullet bulletComponent = GameObjectPool.Instance.GetComponentFromPool(bullet, shootPosition.position, Quaternion.identity) as Bullet;
-					bulletComponent.gameObject.SetActive(true);
 
 					Action onMoveOver = () =>
 					{
@@ -141,8 +140,7 @@ namespace FPS.Weapon
 						hitEffectComponent.gameObject.SetActive(true);
 					};
 
-					bulletComponent.Move(moveTime, transform.position, hit.point, onMoveOver);
-
+					bulletComponent.Move(moveSpeed, shootPosition.position, hit.point, onMoveOver);
 				}
 
 				//重置射击间隔
