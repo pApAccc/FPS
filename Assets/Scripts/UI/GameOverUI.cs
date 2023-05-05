@@ -11,8 +11,9 @@ using Button = UnityEngine.UI.Button;
 /// </summary>
 namespace FPS.UI
 {
-	public class PlayerDeadUI : MonoBehaviour
+	public class GameOverUI : MonoBehaviour
 	{
+		[SerializeField] private TextMeshProUGUI gameOverText;
 		[SerializeField] private TextMeshProUGUI waveText;
 		[SerializeField] private Button restartBtn;
 		[SerializeField] private Button menuBtn;
@@ -37,7 +38,7 @@ namespace FPS.UI
 				Application.Quit();
 			});
 
-			Player.Instance.OnPlayerDead += Player_OnPlayerDead;
+			GameManager.Instance.OnGameOver += GameManager_OnGameOver;
 
 			canvasGroup = GetComponent<CanvasGroup>();
 			canvasGroup.alpha = 0;
@@ -45,8 +46,9 @@ namespace FPS.UI
 			Hide();
 		}
 
-		private void Player_OnPlayerDead(object sender, System.EventArgs e)
+		private void GameManager_OnGameOver(object sender, OnGameOverEventArgs e)
 		{
+			gameOverText.text = e.gameOverText;
 			Show();
 		}
 

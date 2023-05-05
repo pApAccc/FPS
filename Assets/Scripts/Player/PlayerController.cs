@@ -62,7 +62,7 @@ namespace FPS.Core
 			if (GameInput.Instance.IsRun()) calculateSpeed += runSpeed;
 
 			Vector2 moveInput = gameInput.GetMoveDiection();//读取输入
-			Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y) * Time.deltaTime * calculateSpeed;
+			Vector3 moveDirection = calculateSpeed * Time.deltaTime * new Vector3(moveInput.x, 0, moveInput.y);
 			characterController.Move(transform.right * moveDirection.x + transform.forward * moveDirection.z);
 
 			//跳跃移动
@@ -72,7 +72,6 @@ namespace FPS.Core
 				playerVeclocity.y = -2f;
 			}
 			characterController.Move(Vector3.up * playerVeclocity.y * Time.deltaTime);
-
 		}
 
 		private void Look()

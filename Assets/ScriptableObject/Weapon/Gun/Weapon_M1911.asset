@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42f70fb7f3ab5f48bda4dd484a72920, type: 3}
   m_Name: Weapon_M1911
   m_EditorClassIdentifier: 
+  gunName: Pistol
   weaponPrefab: {fileID: 3090027955129370429, guid: d6c62022371374e48a1cedbed1980b45,
     type: 3}
   spawnPosition: {x: 0.5, y: -0.6, z: 0.81}
@@ -30,7 +31,7 @@ MonoBehaviour:
   bullet: {fileID: 5391202863601988023, guid: 3f30f453ae1a9244db4eca7085aa831b, type: 3}
   ammoCapcity: 15
   reloadTimer: 1.5
-  moveSpeed: 200
+  moveSpeed: 300
   ammoType: 0
   shootAudioClip: {fileID: 8300000, guid: 1b766da7cc2d648aa84e36cb5fe8abcb, type: 3}
   lowPitch: 0.8

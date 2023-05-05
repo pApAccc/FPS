@@ -1,4 +1,6 @@
+using FPS.FPSResource;
 using FPS.Helper;
+using FPS.Settings;
 using FPS.Weapon;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ namespace FPS.Core
 		public event EventHandler<OnChangeWeaponEventArgs> OnChangeWeapon;
 		public event EventHandler<OnWeaponReloadCompletedEventArgs> OnWeaponReloadCompleted;
 		public event EventHandler<OnWeaponReloadEventArgs> OnWeaponReload;
+		public event EventHandler<OnAmmoChangedEventArgs> OnAmmoChanged;
 
 		private Gun currentWeapon;
 		private WeaponSO currentWeaponSO;
@@ -102,6 +105,21 @@ namespace FPS.Core
 					reloadTime = currentWeapon.GetReloadTimeMax()
 				});
 			}
+		}
+
+		/// <summary>
+		/// 增加武器备弹
+		/// </summary>
+		/// <param name="ammoType"></param>
+		/// <param name="amount"></param>
+		public void IncreaseWeaponAmmo(AmmoType ammoType, int amount)
+		{
+			bool success = GameResource.Instance.ammoSO.TryFillAmmo(ammoType, amount);
+			OnAmmoChanged?.Invoke(this, new OnAmmoChangedEventArgs
+			{
+				reaminAmmo = currentWeapon.GetRemainAmmo(),
+				remainAmmoTypeAmmoAmount = currentWeapon.GetCurrentAmmoTypeAmmoAmount(),
+			});
 		}
 
 		/// <summary>
@@ -226,6 +244,23 @@ namespace FPS.Core
 			EquipWeapon(weaponSOList[index]);
 		}
 
+		/// <summary>
+		/// 增加武器伤害
+		/// </summary>
+		public bool TryIncreaseWeaponDamage(string weaponName, float damageAmount)
+		{
+			foreach (KeyValuePair<WeaponSO, Gun> keyValuePair in weaponDict)
+			{
+				//找到武器
+				if (keyValuePair.Key.gunName == weaponName)
+				{
+					keyValuePair.Value.IncreaseDamage(damageAmount);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		#region Validate
 #if UNITY_EDITOR
 		private void OnValidate()
@@ -234,6 +269,12 @@ namespace FPS.Core
 		}
 #endif
 		#endregion
+	}
+
+	public class OnAmmoChangedEventArgs : EventArgs
+	{
+		public int reaminAmmo;
+		public int remainAmmoTypeAmmoAmount;
 	}
 
 	public class OnWeaponReloadEventArgs : EventArgs
@@ -257,4 +298,5 @@ namespace FPS.Core
 		public int reaminAmmo;
 		public int remainAmmoTypeAmmoAmount;
 	}
+
 }

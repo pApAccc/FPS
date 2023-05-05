@@ -13,6 +13,7 @@ namespace FPS.Weapon
 		private Vector3 endPosition;
 		private float moveSpeed;
 		private Action onMoverOver;
+
 		private void Update()
 		{
 			if (Vector3.Distance(transform.position, endPosition) > 0.5)

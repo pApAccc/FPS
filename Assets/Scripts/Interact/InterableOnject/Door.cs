@@ -25,6 +25,11 @@ namespace FPS.Core
 			animator = GetComponent<Animator>();
 		}
 
+		private void Update()
+		{
+			print(nameof(animator));
+		}
+
 		public void ToggleDoor(bool isOpen)
 		{
 			animator.SetBool(Setting.toggle, isOpen);

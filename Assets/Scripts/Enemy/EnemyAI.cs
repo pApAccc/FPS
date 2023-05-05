@@ -12,7 +12,7 @@ namespace FPS.EnemyAI
 {
 	public class EnemyAI : MonoBehaviour
 	{
-		public static event EventHandler OnAllEnemyDead;
+		public static event EventHandler OnEnemyDead;
 
 		private StateMachine stateMachine;
 		private EnemyMotor enemyMotor;
@@ -32,7 +32,6 @@ namespace FPS.EnemyAI
 		[SerializeField] private HealthBarUI healthBarUI;
 		[Tooltip("在此范围内就会追击玩家")]
 		[SerializeField] private float chaseDistance = 10;
-
 
 		private void Awake()
 		{
@@ -65,10 +64,13 @@ namespace FPS.EnemyAI
 		#region 注册事件
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
-			Destroy(gameObject);
+			//玩家加钱
+			Player.Instance.TryChangePlayerMoney(true, enemyDetail.dropMoney);
 
-			OnAllEnemyDead?.Invoke(this, EventArgs.Empty);
+			Destroy(gameObject);
+			OnEnemyDead?.Invoke(this, EventArgs.Empty);
 		}
+
 		private void HealthSystem_OnTakeDanage(object sender, EventArgs e)
 		{
 			provoked = true;
@@ -108,13 +110,10 @@ namespace FPS.EnemyAI
 			{
 				if (angryCoroutine != null)
 				{
-					angryCoroutine = StartCoroutine(Angry());
+					StopCoroutine(angryCoroutine);
 				}
-				else
-				{
-					angryCoroutine = null;
-					angryCoroutine = StartCoroutine(Angry());
-				}
+
+				angryCoroutine = StartCoroutine(Angry());
 				isAngry = true;
 				provoked = false;
 			}
@@ -122,7 +121,6 @@ namespace FPS.EnemyAI
 			//与玩家距离小于chaseDistance时，改变状态
 			if (Vector3.Distance(transform.position, Player.Instance.transform.position) < chaseDistance)
 			{
-				stateMachine.ChangeState(enemyFightState, enemyDetail);
 				provoked = true;
 			}
 			//不然切换回巡逻
@@ -147,7 +145,14 @@ namespace FPS.EnemyAI
 				}
 			}
 		}
+
+		private void OnDestroy()
+		{
+			OnEnemyDead = null;
+		}
+
 	}
+
 }
 
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42f70fb7f3ab5f48bda4dd484a72920, type: 3}
   m_Name: Weapon_FlareGun
   m_EditorClassIdentifier: 
+  gunName: Flare
   weaponPrefab: {fileID: 100004, guid: 6832fdaf427605543911bb96706e492a, type: 3}
   spawnPosition: {x: 0.84, y: -0.95, z: 1.22}
   damage: 40
@@ -29,7 +30,7 @@ MonoBehaviour:
   bullet: {fileID: 5391202863601988023, guid: 6697296e60423694ba163351c0ef1e55, type: 3}
   ammoCapcity: 8
   reloadTimer: 2.5
-  moveSpeed: 100
+  moveSpeed: 300
   ammoType: 1
   shootAudioClip: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
   lowPitch: 0.8

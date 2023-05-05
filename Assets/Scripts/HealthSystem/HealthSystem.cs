@@ -9,6 +9,7 @@ namespace FPS.Core
 {
 	public class HealthSystem : MonoBehaviour, IDamagable
 	{
+
 		public event EventHandler OnTakeDanage;
 		public event EventHandler OnHeal;
 		public event EventHandler OnDead;
@@ -40,7 +41,7 @@ namespace FPS.Core
 			}
 		}
 
-		public void Heal(int amount)
+		public void Heal(float amount)
 		{
 			currentHealth += amount;
 			currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -61,12 +62,17 @@ namespace FPS.Core
 
 		public bool IsDead() => deadOnce;
 
-		public void ClearHitSource() => hitSource = null;
-
 		public void SetMaxHealth(int healthAmount)
 		{
 			maxHealth = healthAmount;
 			currentHealth = healthAmount;
+		}
+
+		public void IncreaseMaxHealth(float increaseAmount)
+		{
+			maxHealth += increaseAmount;
+			float dValue = maxHealth - currentHealth;
+			Heal(dValue);
 		}
 
 	}

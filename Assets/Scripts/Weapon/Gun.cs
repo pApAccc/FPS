@@ -16,6 +16,7 @@ namespace FPS.Weapon
 	public class Gun : MonoBehaviour
 	{
 		//基础设置
+		private string gunName;
 		private Animator animator;
 		private float damage;
 		private float shootInterval;
@@ -57,6 +58,7 @@ namespace FPS.Weapon
 
 		public void ReadyShoot(WeaponSO weaponSO)
 		{
+			gunName = weaponSO.gunName;
 			shootInterval = weaponSO.shootInterval;
 			shootTimer = 0;
 			damage = weaponSO.damage;
@@ -226,6 +228,11 @@ namespace FPS.Weapon
 		{
 			reloadTimer = -1;
 			canShoot = true;
+		}
+
+		public void IncreaseDamage(float amount)
+		{
+			damage += amount;
 		}
 	}
 }

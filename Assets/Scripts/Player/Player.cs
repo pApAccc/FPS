@@ -12,12 +12,14 @@ namespace FPS.Core
 {
 	public class Player : SingletonMonoBehaviour<Player>
 	{
-		public event EventHandler OnPlayerDead;
+		public event EventHandler<int> OnPlayerMoneyChanged;
 
 		private PlayerController playerController;
 		private PlayerRayCast playerRayCast;
 		private HealthSystem healthSystem;
 		private PlayerWeapon playerWeapon;
+
+		[SerializeField] private int money = 0;
 
 		public PlayerWeapon PlayerWeapon
 		{
@@ -61,7 +63,8 @@ namespace FPS.Core
 		}
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
-			OnPlayerDead?.Invoke(this, EventArgs.Empty);
+			GameManager.Instance.SetGameOverMessage("YOU DEAD");
+			GameManager.Instance.GameState = Settings.GameState.GameOver;
 		}
 
 		#endregion
@@ -82,6 +85,23 @@ namespace FPS.Core
 		public bool IsDead()
 		{
 			return healthSystem.IsDead();
+		}
+
+		public bool TryChangePlayerMoney(bool increase, int amount)
+		{
+			if (increase)
+				money += amount;
+			else
+			{
+				if (money - amount < 0)
+				{
+					return false;
+				}
+				else
+					money -= amount;
+			}
+			OnPlayerMoneyChanged?.Invoke(this, money);
+			return true;
 		}
 	}
 }

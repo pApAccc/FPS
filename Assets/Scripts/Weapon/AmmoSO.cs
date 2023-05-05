@@ -33,16 +33,14 @@ namespace FPS.Weapon
 			}
 		}
 
-		public void FillAmmo()
+		public bool TryFillAmmo(AmmoType ammoType, int amount)
 		{
-			var array = Enum.GetValues(typeof(AmmoType));
-			foreach (AmmoType ammoType in array)
+			if (ammoDictionary.ContainsKey(ammoType))
 			{
-				if (ammoDictionary.ContainsKey(ammoType))
-				{
-					ammoDictionary[ammoType] += 30;
-				}
+				ammoDictionary[ammoType] += amount;
+				return true;
 			}
+			return false;
 		}
 	}
 

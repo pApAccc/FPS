@@ -17,11 +17,11 @@ namespace FPS.EnemyAI
 		private int enemyToSpawnCount = 0;
 		//当前波次，敌人已经诞生的数量
 		private int enemyAlreadyDeadCount = 0;
-		private Door chooseDoor;
+		private Door chooseDoor = null;
 		private bool resume = true;
 		private float waitTime = 1.5f;
 
-		[Tooltip("最大敌人诞生波次，当波次超过此波次后敌人将基于此数值诞生敌人")]
+		[Tooltip("最大敌人诞生波次,到达此波次后游戏结束")]
 		[SerializeField] private int maxEnemySpawnWave = 20;
 		[SerializeField] private float spawnInterval = 2;
 		[SerializeField] private List<GameObject> enemyPrefabs;
@@ -31,15 +31,23 @@ namespace FPS.EnemyAI
 
 		private void Start()
 		{
-			EnemyAI.OnAllEnemyDead += EnemyAI_OnAllEnemyDead;
+			EnemyAI.OnEnemyDead += EnemyAI_OnEnemyDead;
 		}
 
-		private void EnemyAI_OnAllEnemyDead(object sender, System.EventArgs e)
+		private void EnemyAI_OnEnemyDead(object sender, System.EventArgs e)
 		{
 			enemyAlreadyDeadCount++;
 			//所有敌人已经死亡
 			if (enemyToSpawnCount == enemyAlreadyDeadCount)
 			{
+				//如果到达最大波次
+				if (wave == maxEnemySpawnWave)
+				{
+					GameManager.Instance.SetGameOverMessage("恭喜通过游戏");
+					GameManager.Instance.GameState = Settings.GameState.GameOver;
+					return;
+				}
+
 				//关门
 				chooseDoor.ToggleDoor(false);
 				wave++;

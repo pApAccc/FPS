@@ -1,9 +1,6 @@
 using FPS.Helper;
 using FPS.Settings;
-using Mono.CSharp;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -14,8 +11,10 @@ namespace FPS.Core
 	public class GameManager : SingletonMonoBehaviour<GameManager>
 	{
 		public event EventHandler<OnGamePuaseEventArgs> OnGamePuase;
+		public event EventHandler<OnGameOverEventArgs> OnGameOver;
 
 		private GameState gameState;
+		private string gameOverText = "游戏结束";
 
 		public GameState GameState
 		{
@@ -38,6 +37,14 @@ namespace FPS.Core
 						case GameState.GamePause:
 							gameState = GameState.GamePause;
 							SetGamePause(true);
+							break;
+						case GameState.GameOver:
+							gameState = GameState.GameOver;
+							OnGameOver?.Invoke(this, new OnGameOverEventArgs
+							{
+								gameOverText = gameOverText,
+							});
+							Player.Instance.ToggleComponent(false);
 							break;
 					}
 				}
@@ -82,6 +89,17 @@ namespace FPS.Core
 				isGamePaused = false;
 			}
 		}
+
+
+		public void SetGameOverMessage(string gameOverText)
+		{
+			this.gameOverText = gameOverText;
+		}
+	}
+
+	public class OnGameOverEventArgs
+	{
+		public string gameOverText;
 	}
 
 	public class OnGamePuaseEventArgs : EventArgs
@@ -89,4 +107,5 @@ namespace FPS.Core
 		public bool isGamePaused;
 		public int currentActiveCount;
 	}
+
 }

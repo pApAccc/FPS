@@ -14,12 +14,14 @@ namespace FPS.EnemyAI
 		private const float baseDamage = 15;
 		private const float baseScale = 1;
 		private const float baseAttackRange = 5;
+		private const float baseDropMoney = 10;
 
 		public int Health { get; private set; }
 		public float MoveSpeed { get; private set; }
 		public float Damage { get; private set; }
 		public float Scale { get; private set; }
 		public float AttackRange { get; private set; }
+		public int dropMoney { get; private set; }
 
 		private int level;
 		public int Level
@@ -52,6 +54,7 @@ namespace FPS.EnemyAI
 			Damage = Mathf.RoundToInt(baseDamage * (1 + baseModulus * 3));
 			Scale = baseScale * (1 + baseModulus / 2);
 			AttackRange = baseAttackRange * (1 + baseModulus);
+			dropMoney = Mathf.RoundToInt(baseDropMoney * (1 + baseModulus * 2));
 		}
 	}
 }

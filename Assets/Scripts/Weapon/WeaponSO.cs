@@ -11,6 +11,7 @@ namespace FPS.Weapon
 	{
 		[Space(10)]
 		[Header("武器基础设置")]
+		public string gunName;
 		public GameObject weaponPrefab;
 		[Tooltip("武器诞生位置")]
 		public Vector3 spawnPosition;

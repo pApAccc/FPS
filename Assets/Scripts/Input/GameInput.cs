@@ -77,11 +77,6 @@ namespace FPS.Core
 			return mouseDirection;
 		}
 
-		public float GetMouseScroll()
-		{
-			return input.Player.MouseScroll.ReadValue<float>();
-		}
-
 		private void OnDestroy()
 		{
 			input.Dispose();
