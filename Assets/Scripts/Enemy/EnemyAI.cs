@@ -146,11 +146,6 @@ namespace FPS.EnemyAI
 			}
 		}
 
-		private void OnDestroy()
-		{
-			OnEnemyDead = null;
-		}
-
 	}
 
 }

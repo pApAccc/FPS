@@ -9,7 +9,6 @@ namespace FPS.Core
 {
 	public class HealthSystem : MonoBehaviour, IDamagable
 	{
-
 		public event EventHandler OnTakeDanage;
 		public event EventHandler OnHeal;
 		public event EventHandler OnDead;

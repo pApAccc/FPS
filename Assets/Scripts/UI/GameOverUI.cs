@@ -1,3 +1,4 @@
+using Common.SavingSystem.Sample;
 using FPS.Core;
 using FPS.EnemyAI;
 using FPS.Helper;
@@ -26,6 +27,7 @@ namespace FPS.UI
 			restartBtn.onClick.AddListener(() =>
 			{
 				LoadScene.LoadGameScene(Settings.GameScene.GameScene);
+				SavingWrapper.Instance.Save();
 			});
 
 			menuBtn.onClick.AddListener(() =>

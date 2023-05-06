@@ -140,5 +140,10 @@ namespace FPS.EnemyAI
 		{
 			return wave <= maxEnemySpawnWave ? wave : maxEnemySpawnWave;
 		}
+
+		private void OnDestroy()
+		{
+			EnemyAI.OnEnemyDead -= EnemyAI_OnEnemyDead;
+		}
 	}
 }
