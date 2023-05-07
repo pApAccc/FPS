@@ -30,7 +30,7 @@ MonoBehaviour:
   bullet: {fileID: 5391202863601988023, guid: 6697296e60423694ba163351c0ef1e55, type: 3}
   ammoCapcity: 8
   reloadTimer: 2.5
-  moveSpeed: 300
+  moveSpeed: 400
   ammoType: 1
   shootAudioClip: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
   lowPitch: 0.8

@@ -43,7 +43,7 @@ namespace FPS.EnemyAI
 				//如果到达最大波次
 				if (wave == maxEnemySpawnWave)
 				{
-					GameManager.Instance.SetGameOverMessage("恭喜通过游戏");
+					GameManager.Instance.SetGameOverMessage("恭喜通关游戏");
 					GameManager.Instance.GameState = Settings.GameState.GameOver;
 					return;
 				}
