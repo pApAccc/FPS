@@ -54,7 +54,7 @@ namespace FPS.EnemyAI
 			Damage = Mathf.RoundToInt(baseDamage * (1 + baseModulus * 3));
 			Scale = baseScale * (1 + baseModulus / 2);
 			AttackRange = baseAttackRange * (1 + baseModulus);
-			dropMoney = Mathf.RoundToInt(baseDropMoney * (1 + baseModulus * 2));
+			dropMoney = Mathf.RoundToInt(baseDropMoney * (1 + baseModulus * 3));
 		}
 	}
 }

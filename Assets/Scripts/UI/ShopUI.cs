@@ -1,5 +1,4 @@
 using FPS.Core;
-using FPS.FPSResource;
 using System;
 using System.Collections;
 using TMPro;
@@ -13,6 +12,10 @@ namespace FPS.UI
 {
 	public class ShopUI : MonoBehaviour
 	{
+		public event EventHandler<int> OnPsitolLevelUp;
+		public event EventHandler<int> OnFlareLevelUp;
+		public event EventHandler<int> OnMaxHealthIncreased;
+
 		[SerializeField] private Button quitShopBtn;
 		[SerializeField] private Button pistolDanageUpBtn;
 		[SerializeField] private Button fareDanageUpBtn;
@@ -21,6 +24,14 @@ namespace FPS.UI
 		[SerializeField] private Button playerHealBtn;
 		[SerializeField] private Button playerMaxHealthBtn;
 		[SerializeField] private TextMeshProUGUI hintText;
+
+		private int pistolLevel = 0;
+		private int flareLevel = 0;
+		private int increaseMaxHealthLevel = 0;
+
+		public int PistolMaxLevel { get; private set; } = 5;
+		public int FlareMaxLevel { get; private set; } = 5;
+		public int IncreaseMaxHealthMaxLevel { get; private set; } = 3;
 
 		private float hintTextShowTime = 2;
 		private Coroutine hintTextCoroutine;
@@ -42,56 +53,62 @@ namespace FPS.UI
 
 			pistolDanageUpBtn.onClick.AddListener(() =>
 			{
-				Shopping(40, () =>
+				Shopping(40 * (pistolLevel + 1), () => pistolLevel < PistolMaxLevel, "手枪已经达到最大等级", () =>
 				{
 					playerWeapon.TryIncreaseWeaponDamage("Pistol", 25);
-					ShowHintText("手枪伤害上升25");
+					ShowHintText($"花费{40 * (pistolLevel + 1)}元，手枪伤害上升25");
+					pistolLevel++;
+					OnPsitolLevelUp?.Invoke(this, pistolLevel);
 				});
 			});
 
 			fareDanageUpBtn.onClick.AddListener(() =>
 			{
-				Shopping(40, () =>
+				Shopping(40 * (flareLevel + 1), () => flareLevel < FlareMaxLevel, "火焰枪已经达到最大等级", () =>
 				{
 					playerWeapon.TryIncreaseWeaponDamage("Flare", 25);
-					ShowHintText("火焰枪伤害上升25");
+					ShowHintText($"花费{40 * (flareLevel + 1)}元，火焰枪伤害上升25");
+					flareLevel++;
+					OnFlareLevelUp?.Invoke(this, flareLevel);
 				});
 			});
 
 			pistolAmmoUpBtn.onClick.AddListener(() =>
 			{
-				Shopping(30, () =>
+				Shopping(30, () => true, "", () =>
 				{
 					playerWeapon.IncreaseWeaponAmmo(Settings.AmmoType.pistolAmmo, 20);
-					ShowHintText("获得20手枪备弹");
+					ShowHintText($"花费30元,获得20手枪备弹");
 				});
 			});
 
 			fareAmmoUpBtn.onClick.AddListener(() =>
 			{
-				Shopping(30, () =>
+				Shopping(30, () => true, "", () =>
 				{
 					playerWeapon.IncreaseWeaponAmmo(Settings.AmmoType.flareGunAmmo, 20);
-					ShowHintText("获得20火焰枪备弹");
+					ShowHintText($"花费30元,获得20火焰枪备弹");
 				});
 			});
 
 			playerHealBtn.onClick.AddListener(() =>
 			{
-				Shopping(50, () =>
+				Shopping(50, () => !player.GetHealthSystem().IsFullHealth(), "玩家血量时满的", () =>
 				{
 					player.GetHealthSystem().Heal(30);
-					ShowHintText("获得50生命值");
+					ShowHintText($"花费50元,获得30生命值");
 				});
 
 			});
 
 			playerMaxHealthBtn.onClick.AddListener(() =>
 			{
-				Shopping(100, () =>
+				Shopping(80 * (increaseMaxHealthLevel + 1), () => increaseMaxHealthLevel < IncreaseMaxHealthMaxLevel, "玩家已达到最大生命值", () =>
 				{
 					player.GetHealthSystem().IncreaseMaxHealth(50);
-					ShowHintText("获得50点生命上限");
+					ShowHintText($"花费{80 * (increaseMaxHealthLevel + 1)}元，获得50点生命上限");
+					increaseMaxHealthLevel++;
+					OnMaxHealthIncreased?.Invoke(this, increaseMaxHealthLevel);
 				});
 			});
 
@@ -135,12 +152,19 @@ namespace FPS.UI
 			Cursor.visible = false;
 		}
 
-		private void Shopping(int spendMoney, Action effect)
+		private void Shopping(int spendMoney, Func<bool> canSpend, string failText, Action increasEffect)
 		{
+			//如果因为血量已满等原因无法花费
+			if (!canSpend())
+			{
+				ShowHintText($"{failText}");
+				return;
+			}
+
 			if (Player.Instance.TryChangePlayerMoney(false, spendMoney))
 			{
 				//成功花费
-				effect();
+				increasEffect();
 			}
 			else
 			{
@@ -175,5 +199,6 @@ namespace FPS.UI
 			}
 			hintText.gameObject.SetActive(false);
 		}
+
 	}
 }

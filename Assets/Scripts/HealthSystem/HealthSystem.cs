@@ -74,6 +74,7 @@ namespace FPS.Core
 			Heal(dValue);
 		}
 
+		public bool IsFullHealth() => currentHealth == maxHealth;
 	}
 
 }

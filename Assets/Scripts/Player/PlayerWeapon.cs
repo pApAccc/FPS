@@ -34,9 +34,9 @@ namespace FPS.Core
 
 		private void OnEnable()
 		{
-			GameInput.Instance.OnMouseScrollValueChanged += Instance_OnMouseScrollValueChanged;
-			GameInput.Instance.OnFire += Instance_OnFire;
-			GameInput.Instance.OnReload += Instance_OnReload;
+			GameInput.Instance.OnMouseScrollValueChanged += GameInput_OnMouseScrollValueChanged;
+			GameInput.Instance.OnFire += GameInput_OnFire;
+			GameInput.Instance.OnReload += GameInput_OnReload;
 		}
 
 		private void OnDisable()
@@ -44,9 +44,9 @@ namespace FPS.Core
 			//防止GameInput先销毁导致空指针
 			if (GameInput.Instance != null)
 			{
-				GameInput.Instance.OnMouseScrollValueChanged -= Instance_OnMouseScrollValueChanged;
-				GameInput.Instance.OnFire -= Instance_OnFire;
-				GameInput.Instance.OnReload -= Instance_OnReload;
+				GameInput.Instance.OnMouseScrollValueChanged -= GameInput_OnMouseScrollValueChanged;
+				GameInput.Instance.OnFire -= GameInput_OnFire;
+				GameInput.Instance.OnReload -= GameInput_OnReload;
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace FPS.Core
 			InitializeWeapon();
 		}
 
-		private void Instance_OnReload(object sender, EventArgs e)
+		private void GameInput_OnReload(object sender, EventArgs e)
 		{
 			ReloadWeapon();
 		}
@@ -66,7 +66,7 @@ namespace FPS.Core
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void Instance_OnFire(object sender, EventArgs e)
+		private void GameInput_OnFire(object sender, EventArgs e)
 		{
 			if (currentWeapon.TryShoot(gameObject))
 			{
@@ -142,7 +142,7 @@ namespace FPS.Core
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="value"></param>
-		private void Instance_OnMouseScrollValueChanged(object sender, float value)
+		private void GameInput_OnMouseScrollValueChanged(object sender, float value)
 		{
 			//鼠标向上滚
 			if (value > 0)
