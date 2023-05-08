@@ -14,6 +14,9 @@ namespace FPS.Core
 	{
 		public event EventHandler<int> OnPlayerMoneyChanged;
 
+		public string playerName = "蒙面路人甲";
+		public int score;
+
 		private PlayerController playerController;
 		private PlayerRayCast playerRayCast;
 		private HealthSystem healthSystem;
@@ -103,5 +106,7 @@ namespace FPS.Core
 			OnPlayerMoneyChanged?.Invoke(this, money);
 			return true;
 		}
+
+		public int GetMoney() => money;
 	}
 }

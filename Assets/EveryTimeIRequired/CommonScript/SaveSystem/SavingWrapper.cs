@@ -11,11 +11,13 @@ namespace Common.SavingSystem.Sample
 	{
 		private const string defaultSaveFile = "save";
 		private SavingSystem savingSystem;
+
 		protected override void Awake()
 		{
 			base.Awake();
 
 			savingSystem = GetComponent<SavingSystem>();
+			DontDestroyOnLoad(gameObject);
 			Load();
 		}
 

@@ -10,22 +10,29 @@ using UnityEngine.UI;
 /// </summary>
 namespace FPS.UI
 {
-    public class MainMenuUI : MonoBehaviour
-    {
-        [SerializeField] private Button startGameBtn;
-        [SerializeField] private Button quitGameBtn;
+	public class MainMenuUI : MonoBehaviour
+	{
+		[SerializeField] private Button startGameBtn;
+		[SerializeField] private Button highScoreBtn;
+		[SerializeField] private HighScoreUI highScoreUI;
+		[SerializeField] private Button quitGameBtn;
 
-        private void Start()
-        {
-            startGameBtn.onClick.AddListener(() =>
-            {
-                LoadScene.LoadGameScene(GameScene.GameScene);
-            });
+		private void Start()
+		{
+			startGameBtn.onClick.AddListener(() =>
+			{
+				LoadScene.LoadGameScene(GameScene.GameScene);
+			});
 
-            quitGameBtn.onClick.AddListener(() =>
-            {
-                Application.Quit();
-            });
-        }
-    }
+			highScoreBtn.onClick.AddListener(() =>
+			{
+				highScoreUI.SetAvtive(true);
+			});
+
+			quitGameBtn.onClick.AddListener(() =>
+			{
+				Application.Quit();
+			});
+		}
+	}
 }

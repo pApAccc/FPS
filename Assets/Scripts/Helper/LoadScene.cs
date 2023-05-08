@@ -1,3 +1,4 @@
+using Common.SavingSystem.Sample;
 using FPS.Settings;
 using System.Collections;
 using UnityEngine;
@@ -9,32 +10,34 @@ using UnityEngine.UI;
 /// </summary>
 namespace FPS.Helper
 {
-    public class LoadScene : MonoBehaviour
-    {
-        [SerializeField] private Image loadingBar;
+	public class LoadScene : MonoBehaviour
+	{
+		[SerializeField] private Image loadingBar;
 
-        private static GameScene gameScene;
+		private static GameScene gameScene;
 
-        private void Start()
-        {
-            StartCoroutine(LoadGameScene());
-        }
+		private void Start()
+		{
+			StartCoroutine(LoadGameScene());
+		}
 
-        public static void LoadGameScene(GameScene toGameScene)
-        {
-            SceneManager.LoadSceneAsync(GameScene.LoadingScene.ToString());
-            gameScene = toGameScene;
-        }
+		public static void LoadGameScene(GameScene toGameScene)
+		{
+			SceneManager.LoadSceneAsync(GameScene.LoadingScene.ToString());
+			gameScene = toGameScene;
+		}
 
-        private IEnumerator LoadGameScene()
-        {
-            AsyncOperation operation = SceneManager.LoadSceneAsync(gameScene.ToString());
+		private IEnumerator LoadGameScene()
+		{
+			AsyncOperation operation = SceneManager.LoadSceneAsync(gameScene.ToString());
+			operation.allowSceneActivation = true;
+			operation.completed += x => SavingWrapper.Instance.Load();
 
-            while (true)
-            {
-                loadingBar.fillAmount = operation.progress / 0.9f;
-                yield return null;
-            }
-        }
-    }
+			while (true)
+			{
+				loadingBar.fillAmount = operation.progress / 0.9f;
+				yield return null;
+			}
+		}
+	}
 }

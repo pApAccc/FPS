@@ -23,6 +23,8 @@ namespace FPS.Core
 		{
 			base.Awake();
 
+			DontDestroyOnLoad(gameObject);
+
 			input = new GameInputControl();
 			input.Enable();
 			input.Player.Jump.performed += Jump_performed;

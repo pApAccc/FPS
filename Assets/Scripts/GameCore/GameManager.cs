@@ -52,6 +52,11 @@ namespace FPS.Core
 		}
 		private bool isGamePaused = false;
 
+		protected override void Awake()
+		{
+			DontDestroyOnLoad(gameObject);
+		}
+
 		public void Start()
 		{
 			GameInput.Instance.OnQuit += GameInput_OnPause;
