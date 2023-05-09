@@ -29,6 +29,11 @@ namespace FPS.Settings
 		GameOver
 	}
 
+	public enum EnemyFortState
+	{
+		Idle,
+		Fire
+	}
 
 
 }

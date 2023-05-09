@@ -3,6 +3,7 @@ using FPS.UI;
 using System;
 using System.Collections;
 using UnityEngine;
+using FPS.Helper;
 using Random = UnityEngine.Random;
 /// <summary>
 /// 
@@ -51,10 +52,8 @@ namespace FPS.EnemyAI
 			healthSystem.OnHeal += HealthSystem_OnHeal;
 
 			//根据wave随机等级
-			int currentWave = EnemySpawner.Instance.GetWaveWithConstraint() + 1;//range不包括右值
-			int deviation = Random.Range(0, 3);
-			level = Random.Range(currentWave - deviation <= 0 ? 1 : currentWave - deviation, currentWave);
-			enemyDetail = new EnemyDetail(level);
+			enemyDetail = GameHelper.GetEnemyDetailFromWave(out int randomLevel);
+			level = randomLevel;
 			transform.localScale = new Vector3(enemyDetail.Scale, enemyDetail.Scale, enemyDetail.Scale);
 			healthSystem.SetMaxHealth(enemyDetail.Health);
 
