@@ -1,5 +1,6 @@
 using FPS.Core;
 using FPS.EnemyAI;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -11,8 +12,9 @@ namespace FPS.UI
 	public class SubmitScoreUI : MonoBehaviour
 	{
 		[SerializeField] private TMP_InputField inputField;
+		private Action showScoreUI;
 
-		private void Awake()
+		private void Start()
 		{
 			inputField.onSubmit.AddListener(text =>
 			{
@@ -24,6 +26,7 @@ namespace FPS.UI
 				};
 
 				HighScoreManager.Instance.AddHighScoreList(score);
+				showScoreUI();
 				SetActive(false);
 			});
 
@@ -35,9 +38,10 @@ namespace FPS.UI
 			gameObject.SetActive(state);
 		}
 
-		public void Show()
+		public void ShowAndUpdateScoreUI(Action action)
 		{
 			SetActive(true);
+			showScoreUI = action;
 		}
 	}
 }

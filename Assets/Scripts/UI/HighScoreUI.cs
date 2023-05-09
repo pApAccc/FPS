@@ -14,12 +14,21 @@ namespace FPS.UI
 		[SerializeField] private Button quitBtn;
 		[SerializeField] GameObject ScoreUIPrefab;
 		[SerializeField] private Transform spawnScoreUIRoot;
+		[SerializeField] private Button joinHighScoreBoardBtn;
+		[SerializeField] private SubmitScoreUI submitScoreUI;
 
 		private void Awake()
 		{
 			quitBtn.onClick.AddListener(() =>
 			{
 				SetAvtive(false);
+			});
+
+			//将数据加入排行榜
+			joinHighScoreBoardBtn?.onClick.AddListener(() =>
+			{
+				submitScoreUI.ShowAndUpdateScoreUI(ShowScoreUI);
+				joinHighScoreBoardBtn.gameObject.SetActive(false);
 			});
 
 			SetAvtive(false);

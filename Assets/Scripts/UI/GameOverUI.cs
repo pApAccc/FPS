@@ -21,7 +21,7 @@ namespace FPS.UI
 		[SerializeField] private Button submitScoreBtn;
 		[SerializeField] private Button menuBtn;
 		[SerializeField] private Button quitBtn;
-		[SerializeField] private SubmitScoreUI submitScoreUI;
+		[SerializeField] private HighScoreUI highScoreUI;
 
 
 		private CanvasGroup canvasGroup;
@@ -37,7 +37,7 @@ namespace FPS.UI
 
 			submitScoreBtn.onClick.AddListener(() =>
 			{
-				submitScoreUI.Show();
+				highScoreUI.SetAvtive(true);
 			});
 
 			menuBtn.onClick.AddListener(() =>
