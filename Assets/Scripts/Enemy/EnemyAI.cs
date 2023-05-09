@@ -65,7 +65,8 @@ namespace FPS.EnemyAI
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
 			//玩家加钱
-			Player.Instance.TryChangePlayerMoney(true, enemyDetail.dropMoney);
+			Player.Instance.TryChangePlayerMoney(true, enemyDetail.DropMoney);
+			Player.Instance.IncreaseScore(enemyDetail.DropScore);
 
 			Destroy(gameObject);
 			OnEnemyDead?.Invoke(this, EventArgs.Empty);

@@ -13,9 +13,7 @@ namespace FPS.Core
 	public class Player : SingletonMonoBehaviour<Player>
 	{
 		public event EventHandler<int> OnPlayerMoneyChanged;
-
-		public string playerName = "蒙面路人甲";
-		public int score;
+		public event EventHandler<int> OnPlayerScoreChanged;
 
 		private PlayerController playerController;
 		private PlayerRayCast playerRayCast;
@@ -23,6 +21,7 @@ namespace FPS.Core
 		private PlayerWeapon playerWeapon;
 
 		[SerializeField] private int money = 0;
+		private int score;
 
 		public PlayerWeapon PlayerWeapon
 		{
@@ -51,6 +50,9 @@ namespace FPS.Core
 			healthSystem.OnHeal += HealthSystem_OnHeal;
 			healthSystem.OnTakeDanage += HealthSystem_OnTakeDanage;
 			healthSystem.OnDead += HealthSystem_OnDead;
+
+			OnPlayerScoreChanged?.Invoke(this, score);
+			OnPlayerMoneyChanged?.Invoke(this, money);
 		}
 
 		#region 事件注册
@@ -75,8 +77,6 @@ namespace FPS.Core
 		public PlayerRayCast GetPlayerRayCast() => playerRayCast;
 
 		public HealthSystem GetHealthSystem() => healthSystem;
-
-		public AmmoSO GetAmmoSO() => ammoSO;
 
 		public void ToggleComponent(bool active)
 		{
@@ -106,6 +106,14 @@ namespace FPS.Core
 			OnPlayerMoneyChanged?.Invoke(this, money);
 			return true;
 		}
+
+		public void IncreaseScore(int amount)
+		{
+			score += amount;
+			OnPlayerScoreChanged?.Invoke(this, score);
+		}
+
+		public int GetScore() => score;
 
 		public int GetMoney() => money;
 	}

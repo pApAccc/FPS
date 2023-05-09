@@ -5,6 +5,7 @@ using FPS.Helper;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
 /// <summary>
@@ -17,8 +18,11 @@ namespace FPS.UI
 		[SerializeField] private TextMeshProUGUI gameOverText;
 		[SerializeField] private TextMeshProUGUI waveText;
 		[SerializeField] private Button restartBtn;
+		[SerializeField] private Button submitScoreBtn;
 		[SerializeField] private Button menuBtn;
 		[SerializeField] private Button quitBtn;
+		[SerializeField] private SubmitScoreUI submitScoreUI;
+
 
 		private CanvasGroup canvasGroup;
 
@@ -31,8 +35,14 @@ namespace FPS.UI
 				GameManager.Instance.GameState = Settings.GameState.GameResume;
 			});
 
+			submitScoreBtn.onClick.AddListener(() =>
+			{
+				submitScoreUI.Show();
+			});
+
 			menuBtn.onClick.AddListener(() =>
 			{
+				SavingWrapper.Instance.Save();
 				LoadScene.LoadGameScene(Settings.GameScene.MainScene);
 			});
 
@@ -40,7 +50,6 @@ namespace FPS.UI
 			{
 				Application.Quit();
 			});
-
 			GameManager.Instance.OnGameOver += GameManager_OnGameOver;
 
 			canvasGroup = GetComponent<CanvasGroup>();
@@ -92,6 +101,8 @@ namespace FPS.UI
 		private void OnDestroy()
 		{
 			Time.timeScale = 1;
+			if (GameManager.Instance != null)
+				GameManager.Instance.OnGameOver -= GameManager_OnGameOver;
 		}
 	}
 }

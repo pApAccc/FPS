@@ -2,6 +2,7 @@ using Common.SavingSystem;
 using FPS.EnemyAI;
 using FPS.Helper;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 
@@ -10,41 +11,25 @@ namespace FPS.Core
 {
 	public class HighScoreManager : SingletonMonoBehaviour<HighScoreManager>, ISaveable
 	{
-		private List<Score> scores = new List<Score>();
+		public List<Score> scores = new();
 		private int maxScoreUICount = 30;
 		protected override void Awake()
 		{
 			DontDestroyOnLoad(gameObject);
+
+			base.Awake();
 		}
 
-		private void Start()
+		public void AddHighScoreList(Score score)
 		{
-			GameManager.Instance.OnGameOver += GameManager_OnGameOver;
-		}
+			scores.Add(score);
 
-		private void GameManager_OnGameOver(object sender, OnGameOverEventArgs e)
-		{
-			Score score = new()
-			{
-				playerName = Player.Instance.playerName,
-				score = Player.Instance.score + Player.Instance.GetMoney() * 200,
-				wave = EnemySpawner.Instance.GetWave(),
-			};
+			scores = scores.OrderByDescending(score => score.score).
+							ThenBy(score => score.playerName).ToList();
 
-			SetScoreRank(score);
-		}
-
-		private void SetScoreRank(Score score)
-		{
 			for (int i = 0; i < scores.Count; i++)
 			{
-				//找到第一个分数小于自己
-				if (scores[i].score < score.score)
-				{
-					score.rank = i = 1;
-					scores.Insert(i, score);
-					break;
-				}
+				scores[i].rank = i + 1;
 			}
 
 			//如果当前列表数据数大于最大数据量
@@ -61,7 +46,7 @@ namespace FPS.Core
 
 		public void RestoreState(object state)
 		{
-			scores = new List<Score>();
+			scores = (List<Score>)state;
 		}
 
 		public List<Score> GetScoreUIList() => scores;

@@ -45,6 +45,12 @@ namespace FPS.UI
 			gameObject.SetActive(false);
 		}
 
+		private void OnDestroy()
+		{
+			if (GameManager.Instance != null)
+				GameManager.Instance.OnGamePuase -= GameManager_OnGamePuase;
+		}
+
 		private void GameManager_OnGamePuase(object sender, OnGamePuaseEventArgs e)
 		{
 			//玩家死亡无法暂停

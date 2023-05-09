@@ -55,6 +55,8 @@ namespace FPS.Core
 		protected override void Awake()
 		{
 			DontDestroyOnLoad(gameObject);
+
+			base.Awake();
 		}
 
 		public void Start()
