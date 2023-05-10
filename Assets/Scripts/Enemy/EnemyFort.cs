@@ -2,9 +2,7 @@ using FPS.Core;
 using FPS.Helper;
 using FPS.Settings;
 using FPS.UI;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -12,8 +10,10 @@ using UnityEngine;
 /// </summary>
 namespace FPS.EnemyAI
 {
-	public class EnemyFort : MonoBehaviour
+	public class EnemyFort : Enemy
 	{
+		public event EventHandler OnFortDead;
+
 		private EnemyFortState enemyFortState;
 		private HealthSystem healthSystem;
 		private EnemyDetail enemyDetail;
@@ -58,17 +58,25 @@ namespace FPS.EnemyAI
 			}
 		}
 
-		private void HealthSystem_OnDead(object sender, System.EventArgs e)
+		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
+			OnFortDead?.Invoke(this, EventArgs.Empty);
+
+			Player.Instance.TryChangePlayerMoney(true, enemyDetail.DropMoney);
+			Player.Instance.IncreaseScore(enemyDetail.DropScore);
+
 			Destroy(gameObject);
+			//引发静态事件
+			InvokeOnEnemyDead();
 		}
 
 		private void Update()
 		{
 			if (GameHelper.IsPlayerInRange(transform.position, attackRange))
 			{
-				//看向玩家
-				LookatPlayer();
+				Vector3 lookDir = (Player.Instance.transform.position - transform.position).normalized;
+				Quaternion trandformRotation = Quaternion.LookRotation(Player.Instance.transform.position - transform.position);
+				transform.rotation = Quaternion.Lerp(transform.rotation, trandformRotation, rotateSpeed * Time.deltaTime);
 
 				Vector3 rayDir = (Player.Instance.transform.position - shootPosition.position).normalized;
 				if (Physics.Raycast(shootPosition.position, rayDir, out RaycastHit hit, attackRange, attackLayerMask))
@@ -77,10 +85,6 @@ namespace FPS.EnemyAI
 					if (hit.transform.CompareTag("Player"))
 					{
 						Shoot();
-					}
-					else
-					{
-
 					}
 				}
 			}
@@ -98,21 +102,11 @@ namespace FPS.EnemyAI
 				Quaternion bulletRotation = Quaternion.LookRotation(Player.Instance.transform.position - shootPosition.position);
 				EnemyBullet enemyBullet = GameObjectPool.Instance.GetComponentFromPool(enemyBulletPrefab, shootPosition.position, bulletRotation) as EnemyBullet;
 				enemyBullet.gameObject.SetActive(true);
+				enemyBullet.SetEbnemyBullet(enemyDetail);
+
+				//重置攻击间隔
 				shootIntervalTimer = shootInterval;
 			}
-		}
-
-		private void LookatPlayer()
-		{
-			Vector3 lookDir = (Player.Instance.transform.position - transform.position).normalized;
-			transform.forward = lookDir;
-		}
-
-		private void OnDrawGizmos()
-		{
-			Vector3 rayDir = (Player.Instance.transform.position - shootPosition.position).normalized;
-			Gizmos.color = Color.red;
-			Gizmos.DrawLine(shootPosition.position, shootPosition.position + rayDir * attackRange);
 		}
 	}
 }

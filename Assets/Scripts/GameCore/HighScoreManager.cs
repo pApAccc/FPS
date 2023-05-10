@@ -13,6 +13,7 @@ namespace FPS.Core
 	{
 		public List<Score> scores = new();
 		private int maxScoreUICount = 30;
+
 		protected override void Awake()
 		{
 			DontDestroyOnLoad(gameObject);

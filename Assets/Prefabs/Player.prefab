@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2806433484354767179}
   - component: {fileID: 2806433484354767188}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Virtual Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 2806433485597308519}
   - component: {fileID: 2806433485597308518}
   - component: {fileID: 2806433485597308512}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2806433485717473341}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,9 +219,9 @@ GameObject:
   - component: {fileID: 1020826060}
   - component: {fileID: 1020826062}
   - component: {fileID: 1450335362}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -336,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef1e9a3b3aade5043a6f2350710467d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  money: 100
   healthBarUI: {fileID: 0}
   ammoSO: {fileID: 11400000, guid: 8943f0c1c3e89854ca5073fb9cfcd624, type: 2}
 --- !u!114 &2806433485948941634
@@ -411,7 +412,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2272333519009255114}
-  m_Layer: 2
+  m_Layer: 10
   m_Name: WeaponRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

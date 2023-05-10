@@ -1,5 +1,6 @@
 using Common.SavingSystem.Sample;
 using FPS.Core;
+using FPS.Helper;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
 
@@ -12,14 +13,9 @@ namespace FPS.UI
 	{
 		private bool isShow = false;
 
-		[Header("按钮设置")]
-		[Space(10)]
 		[SerializeField] private Button gameResumeBtn;
+		[SerializeField] private Button menuBtn;
 		[SerializeField] private Button gameQuitBtn;
-
-		[Header("UI设置")]
-		[Space(10)]
-		[SerializeField] private GameSettingUI gameSettingUI;
 
 		private void Start()
 		{
@@ -33,6 +29,13 @@ namespace FPS.UI
 
 				//恢复时间，显示鼠标
 				GameManager.Instance.GameState = Settings.GameState.GameResume;
+			});
+
+			menuBtn.onClick.AddListener(() =>
+			{
+				GameManager.Instance.GameState = Settings.GameState.GameOver;
+				SavingWrapper.Instance.Save();
+				LoadScene.LoadGameScene(Settings.GameScene.MainScene);
 			});
 
 			gameQuitBtn.onClick.AddListener(() =>

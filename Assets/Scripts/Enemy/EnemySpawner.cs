@@ -22,16 +22,17 @@ namespace FPS.EnemyAI
 		private float waitTime = 1.5f;
 
 		[Tooltip("最大敌人诞生波次,到达此波次后游戏结束")]
-		[SerializeField] private int maxEnemySpawnWave = 20;
+		[SerializeField] private int maxEnemySpawnWave = 10;
 		[SerializeField] private float spawnInterval = 2;
 		[SerializeField] private List<GameObject> enemyPrefabs;
 		[SerializeField] private List<Door> enemyDoorlist;
 		[SerializeField] private List<EnemyMovePathRoot> enemyMovePathRoots;
 		[SerializeField] private NextWaveUI nextWaveUI;
+		[SerializeField] private SpawnEnemyFort spawnEnemyFort;
 
 		private void Start()
 		{
-			EnemyAI.OnEnemyDead += EnemyAI_OnEnemyDead;
+			Enemy.OnEnemyDead += EnemyAI_OnEnemyDead;
 		}
 
 		private void EnemyAI_OnEnemyDead(object sender, System.EventArgs e)
@@ -76,18 +77,25 @@ namespace FPS.EnemyAI
 
 		private IEnumerator SpawnEnemy(Door door)
 		{
-			bool spawnOnlyOneTypeEnemy = 1 == Random.Range(0, 2);
-			int amount = GetRandomAmountEnemy();
-			enemyToSpawnCount = amount;
+			//数据初始化
+			enemyToSpawnCount = 0;
 			enemyAlreadyDeadCount = 0;
 			GameObject prefab = null;
+
+			//生成炮塔
+			SpawnEnemyFort();
+
+			bool spawnOnlyOneTypeEnemy = 1 == Random.Range(0, 2);
+			int enemyAIAmount = GetRandomAmountEnemy();
+			//敌人总诞生数
+			enemyToSpawnCount += enemyAIAmount;
 			//如果为真，随机一种敌人诞生
 			if (spawnOnlyOneTypeEnemy)
 			{
 				prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
 			}
 			//如果还能诞生敌人
-			while (amount > 0)
+			while (enemyAIAmount > 0)
 			{
 				//如果为假，每次随机不同敌人
 				if (!spawnOnlyOneTypeEnemy)
@@ -95,7 +103,7 @@ namespace FPS.EnemyAI
 					prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
 				}
 
-				amount--;
+				enemyAIAmount--;
 				EnemyPatrolState enemyPatrolState = Instantiate(prefab, door.EnemySpawnPoint.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
 				enemyPatrolState.SetenemyMovePathRoot(enemyMovePathRoots[Random.Range(0, enemyMovePathRoots.Count)]);
 
@@ -103,6 +111,14 @@ namespace FPS.EnemyAI
 				yield return new WaitForSeconds(spawnInterval);
 			}
 			chooseDoor.ToggleDoor(false);
+		}
+
+		private void SpawnEnemyFort()
+		{
+			if (spawnEnemyFort.TrySpawnEnemyFort())
+			{
+				enemyToSpawnCount++;
+			}
 		}
 
 		/// <summary>
@@ -141,9 +157,11 @@ namespace FPS.EnemyAI
 			return wave <= maxEnemySpawnWave ? wave : maxEnemySpawnWave;
 		}
 
+
+
 		private void OnDestroy()
 		{
-			EnemyAI.OnEnemyDead -= EnemyAI_OnEnemyDead;
+			Enemy.OnEnemyDead -= EnemyAI_OnEnemyDead;
 		}
 	}
 }

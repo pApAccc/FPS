@@ -1,6 +1,7 @@
 
-using System;
-using System.Collections;
+using FPS.EnemyAI;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -9,5 +10,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+	private void Awake()
+	{
 
+	}
 }

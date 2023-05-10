@@ -11,10 +11,8 @@ using Random = UnityEngine.Random;
 
 namespace FPS.EnemyAI
 {
-	public class EnemyAI : MonoBehaviour
+	public class EnemyAI : Enemy
 	{
-		public static event EventHandler OnEnemyDead;
-
 		private StateMachine stateMachine;
 		private EnemyMotor enemyMotor;
 		private EnemyPatrolState enemyPatrolState;
@@ -68,7 +66,7 @@ namespace FPS.EnemyAI
 			Player.Instance.IncreaseScore(enemyDetail.DropScore);
 
 			Destroy(gameObject);
-			OnEnemyDead?.Invoke(this, EventArgs.Empty);
+			InvokeOnEnemyDead();
 		}
 
 		private void HealthSystem_OnTakeDanage(object sender, EventArgs e)

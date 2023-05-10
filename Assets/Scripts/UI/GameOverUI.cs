@@ -5,7 +5,6 @@ using FPS.Helper;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
 /// <summary>

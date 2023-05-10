@@ -12,7 +12,7 @@ namespace Common.SavingSystem
 	public class SaveableEntity : MonoBehaviour
 	{
 		[SerializeField] string uniqueIdentifier = "";
-		static Dictionary<string, SaveableEntity> globalLookup = new Dictionary<string, SaveableEntity>();
+		static Dictionary<string, SaveableEntity> globalLookup = new();
 
 		public string GetUniqueIdentifier()
 		{
@@ -21,7 +21,7 @@ namespace Common.SavingSystem
 
 		public object CaptureState()
 		{
-			Dictionary<string, object> state = new Dictionary<string, object>();
+			Dictionary<string, object> state = new();
 			foreach (ISaveable saveable in GetComponents<ISaveable>())
 			{
 				state[saveable.GetType().ToString()] = saveable.CaptureState();
@@ -52,7 +52,7 @@ namespace Common.SavingSystem
 			//避免自动给预制件设置UUID
 			if (string.IsNullOrEmpty(gameObject.scene.path)) { return; }
 
-			SerializedObject serializedObject = new SerializedObject(this);
+			SerializedObject serializedObject = new(this);
 			SerializedProperty property = serializedObject.FindProperty("uniqueIdentifier");
 
 			if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))

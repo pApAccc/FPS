@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 1266380383999559841}
   - component: {fileID: 1061424125499969283}
   m_Layer: 8
-  m_Name: Enemy_Fire
+  m_Name: Enemy_Fort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1266380384119356042}
   - {fileID: 1998714989143773585}
@@ -255,7 +255,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d99117065eb9f241b2af63cc6889e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRange: 60
+  rotateSpeed: 10
+  shootPosition: {fileID: 1884083229133469576}
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 1472
   healthBarUI: {fileID: 9198940477170075316}
+  enemyBulletPrefab: {fileID: 3101791882344112639, guid: 73b576d40a25248489086a3d2b96afda,
+    type: 3}
 --- !u!1 &1266380384119356041
 GameObject:
   m_ObjectHideFlags: 0
