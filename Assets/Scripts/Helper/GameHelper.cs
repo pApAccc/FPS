@@ -11,9 +11,10 @@ namespace FPS.Helper
 	{
 		public static EnemyDetail GetEnemyDetailFromWave(out int level)
 		{
-			int currentWave = EnemySpawner.Instance.GetWaveWithConstraint() + 1;//range不包括右值
+			//int currentWave = EnemySpawner.Instance.GetWaveWithConstraint() + 1;//range不包括右值
 			int deviation = Random.Range(0, 3);
-			level = Random.Range(currentWave - deviation <= 0 ? 1 : currentWave - deviation, currentWave);
+			//level = Random.Range(currentWave - deviation <= 0 ? 1 : currentWave - deviation, currentWave);
+			level = 1;
 			return new EnemyDetail(level);
 		}
 

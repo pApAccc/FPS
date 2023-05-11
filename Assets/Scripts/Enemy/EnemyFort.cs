@@ -1,9 +1,9 @@
 using FPS.Core;
 using FPS.Helper;
-using FPS.Settings;
 using FPS.UI;
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// 
@@ -14,13 +14,14 @@ namespace FPS.EnemyAI
 	{
 		public event EventHandler OnFortDead;
 
-		private EnemyFortState enemyFortState;
 		private HealthSystem healthSystem;
 		private EnemyDetail enemyDetail;
 		private int level;
 		private float shootIntervalTimer = 0;
 		private float shootInterval = 2;
 
+		public static int minLevel = 1;
+		public static int maxLevel = 4;
 
 		[SerializeField] private int attackRange = 30;
 		[SerializeField] private float rotateSpeed = 100;
@@ -28,6 +29,7 @@ namespace FPS.EnemyAI
 		[SerializeField] private LayerMask attackLayerMask;
 		[SerializeField] private HealthBarUI healthBarUI;
 		[SerializeField] private GameObject enemyBulletPrefab;
+		[SerializeField] private GameObject enemyHitEffectPrefab;
 
 		private void Awake()
 		{
@@ -42,12 +44,13 @@ namespace FPS.EnemyAI
 
 			//设置enemydetail
 			enemyDetail = GameHelper.GetEnemyDetailFromWave(out int randomLevel);
+			enemyDetail = new EnemyDetail(Random.Range(minLevel, maxLevel));
 			level = randomLevel;
 			healthSystem.SetMaxHealth(enemyDetail.Health);
 
 		}
 
-		private void HealthSystem_OnTakeDanage(object sender, System.EventArgs e)
+		private void HealthSystem_OnTakeDanage(object sender, EventArgs e)
 		{
 			healthBarUI.DamageVisual(healthSystem.GetHealthPrecent());
 
@@ -101,8 +104,10 @@ namespace FPS.EnemyAI
 			{
 				Quaternion bulletRotation = Quaternion.LookRotation(Player.Instance.transform.position - shootPosition.position);
 				EnemyBullet enemyBullet = GameObjectPool.Instance.GetComponentFromPool(enemyBulletPrefab, shootPosition.position, bulletRotation) as EnemyBullet;
+				enemyBullet.SetEnemyBullet(enemyDetail);
+				enemyBullet.SetHitEffect(enemyHitEffectPrefab);
 				enemyBullet.gameObject.SetActive(true);
-				enemyBullet.SetEbnemyBullet(enemyDetail);
+
 
 				//重置攻击间隔
 				shootIntervalTimer = shootInterval;

@@ -1,3 +1,4 @@
+using Cinemachine;
 using FPS.FPSResource;
 using FPS.Helper;
 using FPS.Settings;
@@ -23,9 +24,12 @@ namespace FPS.Core
 		private WeaponSO currentWeaponSO;
 		private WeaponSO defaultWeapon;
 		private Dictionary<WeaponSO, Gun> weaponDict = new Dictionary<WeaponSO, Gun>();
+		private float defaultZoomLens = 60;
+		private float zoomInLens = 40;
 
 		[SerializeField] private Transform weaponRoot;
 		[SerializeField] private List<WeaponSO> weaponSOList;
+		[SerializeField] private CinemachineVirtualCamera virtualCamera;
 
 		private void Awake()
 		{
@@ -37,7 +41,11 @@ namespace FPS.Core
 			GameInput.Instance.OnMouseScrollValueChanged += GameInput_OnMouseScrollValueChanged;
 			GameInput.Instance.OnFire += GameInput_OnFire;
 			GameInput.Instance.OnReload += GameInput_OnReload;
+			GameInput.Instance.OnZoomOut += GameInput_OnZoomOut;
+			GameInput.Instance.OnZoomIn += GameInput_OnZoomIn;
 		}
+
+
 
 		private void OnDisable()
 		{
@@ -47,6 +55,7 @@ namespace FPS.Core
 				GameInput.Instance.OnMouseScrollValueChanged -= GameInput_OnMouseScrollValueChanged;
 				GameInput.Instance.OnFire -= GameInput_OnFire;
 				GameInput.Instance.OnReload -= GameInput_OnReload;
+				GameInput.Instance.OnZoomOut -= GameInput_OnZoomOut;
 			}
 		}
 
@@ -83,6 +92,19 @@ namespace FPS.Core
 				ReloadWeapon();
 			}
 		}
+
+		private void GameInput_OnZoomIn(object sender, EventArgs e)
+		{
+			virtualCamera.m_Lens.FieldOfView = Mathf.Lerp(virtualCamera.m_Lens.FieldOfView,
+														zoomInLens, 20 * Time.deltaTime);
+		}
+
+		private void GameInput_OnZoomOut(object sender, EventArgs e)
+		{
+			virtualCamera.m_Lens.FieldOfView = Mathf.Lerp(virtualCamera.m_Lens.FieldOfView,
+														defaultZoomLens, 20 * Time.deltaTime);
+		}
+
 
 		/// <summary>
 		/// 武器换弹

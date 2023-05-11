@@ -9,25 +9,30 @@ namespace FPS.EnemyAI
 {
 	public class EnemyBullet : MonoBehaviour
 	{
-		private float maxLiveTimer = 5;
+		private float maxLiveTimer = 4;
+		private float liveTimer = 0;
 		private float damage;
+		private GameObject hitEffect;
 
 		[SerializeField] private float moveSpeed = 20;
 		[SerializeField] private LayerMask layerMask;
-		[SerializeField] private GameObject hitEffect;
 
+		private void Awake()
+		{
+			liveTimer = maxLiveTimer;
+		}
 		private void Update()
 		{
-			maxLiveTimer -= Time.deltaTime;
+			liveTimer -= Time.deltaTime;
 			transform.position += transform.forward * moveSpeed * Time.deltaTime;
 
-			if (maxLiveTimer <= 0)
+			if (liveTimer <= 0)
 			{
 				gameObject.SetActive(false);
 			}
 		}
 
-		public void SetEbnemyBullet(EnemyDetail enemyDetail)
+		public void SetEnemyBullet(EnemyDetail enemyDetail)
 		{
 			damage = enemyDetail.Damage;
 		}
@@ -54,6 +59,17 @@ namespace FPS.EnemyAI
 
 				gameObject.SetActive(false);
 			}
+
+		}
+
+		private void OnDisable()
+		{
+			liveTimer = maxLiveTimer;
+		}
+
+		public void SetHitEffect(GameObject hitEffect)
+		{
+			this.hitEffect = hitEffect;
 		}
 	}
 }

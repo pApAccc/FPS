@@ -17,17 +17,20 @@ namespace FPS.Core
 		private bool isGround;
 		private Vector3 playerVeclocity;
 		private GameInput gameInput;
+		private bool canDoubleJump = false;
+		private Animator animator;
 
 		[SerializeField] private float moveSpeed = 1;
 		[SerializeField] private float runSpeed = 2;
 		[SerializeField] private float rotateSpeed = 1;
 		[SerializeField] private Transform cameraTransform;
 		[SerializeField] private float gravity = -9.8f;
-		[SerializeField] private float jumpHeight = 1.2f;
+		[SerializeField] private float jumpHeight = 1.8f;
 
 		private void Awake()
 		{
 			characterController = GetComponent<CharacterController>();
+			animator = GetComponent<Animator>();
 
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
@@ -59,11 +62,16 @@ namespace FPS.Core
 		{
 			//水平移动
 			float calculateSpeed = moveSpeed;//重新计算速度
-			if (GameInput.Instance.IsRun()) calculateSpeed += runSpeed;
+			if (GameInput.Instance.IsRun()) { calculateSpeed += runSpeed; }
 
 			Vector2 moveInput = gameInput.GetMoveDiection();//读取输入
 			Vector3 moveDirection = calculateSpeed * Time.deltaTime * new Vector3(moveInput.x, 0, moveInput.y);
 			characterController.Move(transform.right * moveDirection.x + transform.forward * moveDirection.z);
+
+			//设置移动动画
+			animator.SetFloat("moveSpeed", moveInput.magnitude);
+			animator.SetBool("onGround", !isGround);
+			animator.SetBool("isRun", GameInput.Instance.IsRun());
 
 			//跳跃移动
 			playerVeclocity.y += gravity * Time.deltaTime;//不在地面会持续施加重力
@@ -91,10 +99,16 @@ namespace FPS.Core
 
 		private void Jump()
 		{
+			if (canDoubleJump)
+			{
+				playerVeclocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+				canDoubleJump = false;
+			}
+
 			if (isGround)
 			{
-				//如果不是地面，计算垂直速度
 				playerVeclocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+				canDoubleJump = true;
 			}
 		}
 

@@ -74,7 +74,7 @@ namespace FPS.UI
 			Player.Instance.ToggleComponent(false);
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
-			waveText.text = $"你存活了 <color=red>{EnemySpawner.Instance.GetWave()}</color> 波";
+			waveText.text = $"";
 
 			StartCoroutine(DisplayCanvas());
 		}

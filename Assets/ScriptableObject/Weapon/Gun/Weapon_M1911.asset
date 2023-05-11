@@ -17,7 +17,7 @@ MonoBehaviour:
     type: 3}
   spawnPosition: {x: 0.5, y: -0.6, z: 0.81}
   damage: 70
-  shootInterval: 0.5
+  shootInterval: 0.2
   shootEffect: {fileID: 1687680602027628, guid: 273995d68fa95424eb14d4a430334ae4,
     type: 3}
   shootHitEffect: {fileID: 1900636369659048, guid: 7712e46fb3b46064397b699d370056ae,
@@ -31,7 +31,7 @@ MonoBehaviour:
   bullet: {fileID: 5391202863601988023, guid: 3f30f453ae1a9244db4eca7085aa831b, type: 3}
   ammoCapcity: 15
   reloadTimer: 1.5
-  moveSpeed: 400
+  moveSpeed: 200
   ammoType: 0
   shootAudioClip: {fileID: 8300000, guid: 1b766da7cc2d648aa84e36cb5fe8abcb, type: 3}
   lowPitch: 0.8

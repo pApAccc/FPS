@@ -13,7 +13,10 @@ namespace FPS.EnemyAI
 		private LazyValue<List<Vector3>> pathPointList;
 		private int currentPathPoint = 0;
 		private EnemyMotor enemyMotor;
+		private float waitTimerMax = 2;
+		private float waitTimer = 0;
 
+		[SerializeField] private Animator animator;
 		[SerializeField] private EnemyMovePathRoot enemyMovePathRoot;
 		private float patrolSpeed;
 
@@ -33,9 +36,16 @@ namespace FPS.EnemyAI
 
 		public override void Perform()
 		{
+			animator.SetBool("isRun", true);
 			if (Vector3.Distance(transform.position, pathPointList.value[currentPathPoint]) < 1f)
 			{
-				enemyMotor.Move(GetNextMovePoint(), 0, patrolSpeed);
+				animator.SetBool("isRun", false);
+				waitTimer -= Time.deltaTime;
+				if (waitTimer <= 0)
+				{
+					enemyMotor.Move(GetNextMovePoint(), 0, patrolSpeed);
+					waitTimer = waitTimerMax;
+				}
 			}
 		}
 

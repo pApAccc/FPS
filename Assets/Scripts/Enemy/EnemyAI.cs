@@ -24,13 +24,16 @@ namespace FPS.EnemyAI
 		private EnemyDetail enemyDetail;
 		private int level;
 
+		public static int minLevel = 1;
+		public static int maxLevel = 4;
+
 		[SerializeField] private bool isAngry = false;
 		[SerializeField] private bool isAlwaysAngry = false;
 		[Tooltip("如果被玩家击中则进入愤怒状态的时间")]
 		[SerializeField] private float angryTimer = 5f;
 		[SerializeField] private HealthBarUI healthBarUI;
 		[Tooltip("在此范围内就会追击玩家")]
-		[SerializeField] private float chaseDistance = 10;
+		[SerializeField] private float chaseDistance = 20;
 
 		private void Awake()
 		{
@@ -50,8 +53,8 @@ namespace FPS.EnemyAI
 			healthSystem.OnHeal += HealthSystem_OnHeal;
 
 			//根据wave随机等级
-			enemyDetail = GameHelper.GetEnemyDetailFromWave(out int randomLevel);
-			level = randomLevel;
+			//enemyDetail = GameHelper.GetEnemyDetailFromWave(out int randomLevel);
+			enemyDetail = new EnemyDetail(Random.Range(minLevel, maxLevel));
 			transform.localScale = new Vector3(enemyDetail.Scale, enemyDetail.Scale, enemyDetail.Scale);
 			healthSystem.SetMaxHealth(enemyDetail.Health);
 

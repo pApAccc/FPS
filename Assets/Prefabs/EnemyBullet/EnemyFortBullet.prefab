@@ -51,7 +51,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1216
-  hitEffect: {fileID: 1923500111986380, guid: cbfc5e47424ad834880c2b1f4349f987, type: 3}
 --- !u!54 &6466630684366096414
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4959,7 +4958,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 2
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 1
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}

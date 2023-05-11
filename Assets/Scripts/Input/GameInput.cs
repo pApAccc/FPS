@@ -14,6 +14,8 @@ namespace FPS.Core
 		public event EventHandler OnFire;
 		public event EventHandler OnReload;
 		public event EventHandler OnQuit;
+		public event EventHandler OnZoomIn;
+		public event EventHandler OnZoomOut;
 		public event EventHandler<float> OnMouseScrollValueChanged;
 
 		private GameInputControl input;
@@ -47,6 +49,17 @@ namespace FPS.Core
 			}
 		}
 
+		private void LateUpdate()
+		{
+			if (input.Player.Zoom.IsPressed())
+			{
+				OnZoomIn?.Invoke(this, EventArgs.Empty);
+			}
+			else
+			{
+				OnZoomOut?.Invoke(this, EventArgs.Empty);
+			}
+		}
 		private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
 		{
 			OnInteract?.Invoke(this, EventArgs.Empty);

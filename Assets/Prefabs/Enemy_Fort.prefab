@@ -264,6 +264,8 @@ MonoBehaviour:
   healthBarUI: {fileID: 9198940477170075316}
   enemyBulletPrefab: {fileID: 3101791882344112639, guid: 73b576d40a25248489086a3d2b96afda,
     type: 3}
+  enemyHitEffectPrefab: {fileID: 1923500111986380, guid: cbfc5e47424ad834880c2b1f4349f987,
+    type: 3}
 --- !u!1 &1266380384119356041
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
 
 /// <summary>
 /// 
@@ -116,11 +117,11 @@ namespace FPS.Weapon
 				//射击特效
 				Component flashComponent = GameObjectPool.Instance.GetComponentFromPool(shootEffect, shootPosition.position, Quaternion.identity);
 				flashComponent.gameObject.SetActive(true);
+				Bullet bulletComponent = GameObjectPool.Instance.GetComponentFromPool(bullet, shootPosition.position, Quaternion.identity) as Bullet;
 
+				//射线击中物体
 				if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, maxShootRange, shootVisualLayerMask))
 				{
-					Bullet bulletComponent = GameObjectPool.Instance.GetComponentFromPool(bullet, shootPosition.position, Quaternion.identity) as Bullet;
-
 					Action onMoveOver = () =>
 					{
 						//如果武器是范围伤害
@@ -143,6 +144,12 @@ namespace FPS.Weapon
 					};
 
 					bulletComponent.Move(moveSpeed, shootPosition.position, hit.point, onMoveOver);
+				}
+				//射线没击中
+				else
+				{
+					bulletComponent.Move(moveSpeed, shootPosition.position,
+										shootPosition.position + shootPosition.forward * 50, () => { });
 				}
 
 				//重置射击间隔

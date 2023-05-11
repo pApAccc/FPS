@@ -17,18 +17,23 @@ namespace FPS.EnemyAI
 		private int enemyToSpawnCount = 0;
 		//当前波次，敌人已经诞生的数量
 		private int enemyAlreadyDeadCount = 0;
-		private Door chooseDoor = null;
 		private bool resume = true;
 		private float waitTime = 1.5f;
 
 		[Tooltip("最大敌人诞生波次,到达此波次后游戏结束")]
 		[SerializeField] private int maxEnemySpawnWave = 10;
-		[SerializeField] private float spawnInterval = 2;
+		[SerializeField] private float spawnInterval = 1;
 		[SerializeField] private List<GameObject> enemyPrefabs;
-		[SerializeField] private List<Door> enemyDoorlist;
 		[SerializeField] private List<EnemyMovePathRoot> enemyMovePathRoots;
+		[SerializeField] private List<Transform> spawnPoints;
 		[SerializeField] private NextWaveUI nextWaveUI;
-		[SerializeField] private SpawnEnemyFort spawnEnemyFort;
+
+		protected override void Awake()
+		{
+			base.Awake();
+
+			gameObject.SetActive(false);
+		}
 
 		private void Start()
 		{
@@ -49,8 +54,6 @@ namespace FPS.EnemyAI
 					return;
 				}
 
-				//关门
-				chooseDoor.ToggleDoor(false);
 				wave++;
 				////暂时等待一会
 				StartCoroutine(WaitForNextWave());
@@ -68,11 +71,9 @@ namespace FPS.EnemyAI
 		private IEnumerator DoorOpen()
 		{
 			yield return nextWaveUI.ShowUI(wave);
-			chooseDoor = ChooseRandomDoor();
-			//开关门
-			chooseDoor.ToggleDoor(true);
+
 			//开始诞生敌人
-			yield return (SpawnEnemy(chooseDoor));
+			//yield return (SpawnEnemy(chooseDoor));
 		}
 
 		private IEnumerator SpawnEnemy(Door door)
@@ -81,9 +82,6 @@ namespace FPS.EnemyAI
 			enemyToSpawnCount = 0;
 			enemyAlreadyDeadCount = 0;
 			GameObject prefab = null;
-
-			//生成炮塔
-			SpawnEnemyFort();
 
 			bool spawnOnlyOneTypeEnemy = 1 == Random.Range(0, 2);
 			int enemyAIAmount = GetRandomAmountEnemy();
@@ -104,31 +102,12 @@ namespace FPS.EnemyAI
 				}
 
 				enemyAIAmount--;
-				EnemyPatrolState enemyPatrolState = Instantiate(prefab, door.EnemySpawnPoint.position, Quaternion.identity).GetComponent<EnemyPatrolState>();
+				EnemyPatrolState enemyPatrolState = Instantiate(prefab, GetRandomSpawnPoint(), Quaternion.identity).GetComponent<EnemyPatrolState>();
 				enemyPatrolState.SetenemyMovePathRoot(enemyMovePathRoots[Random.Range(0, enemyMovePathRoots.Count)]);
 
 				//等待
 				yield return new WaitForSeconds(spawnInterval);
 			}
-			chooseDoor.ToggleDoor(false);
-		}
-
-		private void SpawnEnemyFort()
-		{
-			if (spawnEnemyFort.TrySpawnEnemyFort())
-			{
-				enemyToSpawnCount++;
-			}
-		}
-
-		/// <summary>
-		/// 随机选择一个门
-		/// </summary>
-		/// <returns></returns>
-		private Door ChooseRandomDoor()
-		{
-			int randomDoor = Random.Range(0, enemyDoorlist.Count);
-			return enemyDoorlist[randomDoor];
 		}
 
 		/// <summary>
@@ -144,6 +123,12 @@ namespace FPS.EnemyAI
 			return Random.Range(enenmyWave - deviation <= 0 ? 1 : enenmyWave - deviation, enenmyWave);
 		}
 
+		private Vector3 GetRandomSpawnPoint()
+		{
+			int index = Random.Range(0, spawnPoints.Count);
+			return spawnPoints[index].position;
+		}
+
 		private IEnumerator WaitForNextWave()
 		{
 			yield return new WaitForSeconds(waitTime);
@@ -156,8 +141,6 @@ namespace FPS.EnemyAI
 		{
 			return wave <= maxEnemySpawnWave ? wave : maxEnemySpawnWave;
 		}
-
-
 
 		private void OnDestroy()
 		{

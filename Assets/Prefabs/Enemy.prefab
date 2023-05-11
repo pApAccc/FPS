@@ -390,6 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2920502e3cf904784fd8cd872a55f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   enemyMovePathRoot: {fileID: 0}
 --- !u!114 &1266380383999559851
 MonoBehaviour:
@@ -420,8 +421,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229128791d8191143b607e0d144048bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftEye: {fileID: 1266380383432673186}
-  rightEye: {fileID: 1266380382701151214}
+  animator: {fileID: 0}
+  shootTF: {fileID: 0}
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyBulletPrefab: {fileID: 0}
 --- !u!114 &1266380383999559841
 MonoBehaviour:
   m_ObjectHideFlags: 0
