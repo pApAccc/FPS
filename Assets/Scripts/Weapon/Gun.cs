@@ -136,7 +136,7 @@ namespace FPS.Weapon
 						//如果武器是单体伤害
 						else if (WeaponShootScope.Single == shootScope)
 						{
-							hit.transform.GetComponentInParent<IDamagable>()?.TakeDamage(hitSource, damage);
+							hit.transform?.GetComponentInParent<IDamagable>()?.TakeDamage(hitSource, damage);
 						}
 						//诞生特效
 						Component hitEffectComponent = GameObjectPool.Instance.GetComponentFromPool(shootHitEffect, hit.point, Quaternion.LookRotation(hit.normal));

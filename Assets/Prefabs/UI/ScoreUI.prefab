@@ -328,7 +328,7 @@ MonoBehaviour:
   rankText: {fileID: 8084233224505926347}
   playerName: {fileID: 8084233224608001016}
   score: {fileID: 8084233225651494416}
-  wave: {fileID: 8084233226094302413}
+  killedEnemy: {fileID: 8084233226094302413}
 --- !u!1 &8084233225651494418
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,7 +477,7 @@ GameObject:
   - component: {fileID: 8084233226094302412}
   - component: {fileID: 8084233226094302413}
   m_Layer: 5
-  m_Name: SurviveText
+  m_Name: KilledEnemyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

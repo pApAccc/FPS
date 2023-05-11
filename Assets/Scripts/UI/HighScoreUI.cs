@@ -60,7 +60,7 @@ namespace FPS.UI
 				scoreUI.playerName.text = score.playerName;
 				scoreUI.rankText.text = score.rank.ToString();
 				scoreUI.score.text = score.score.ToString();
-				scoreUI.wave.text = score.wave.ToString();
+				scoreUI.killedEnemy.text = score.killedEnemy.ToString();
 			}
 		}
 	}

@@ -11,11 +11,11 @@ namespace FPS.Core
 	public class WaveControl : MonoBehaviour
 	{
 		[SerializeField] LayerMask layerMask;
-		private void OnTriggerEnter(Collider other)
+		private void OnTriggerExit(Collider other)
 		{
 			if (other.CompareTag("Player"))
 			{
-				EnemySpawner.Instance.gameObject.SetActive(true);
+				EnemySpawnManager.Instance.gameObject.SetActive(true);
 			}
 		}
 	}

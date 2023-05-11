@@ -11,6 +11,6 @@ namespace FPS.Core
 		public int rank;
 		public string playerName;
 		public int score;
-		public int wave;
+		public int killedEnemy;
 	}
 }

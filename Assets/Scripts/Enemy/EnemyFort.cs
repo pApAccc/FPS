@@ -20,9 +20,6 @@ namespace FPS.EnemyAI
 		private float shootIntervalTimer = 0;
 		private float shootInterval = 2;
 
-		public static int minLevel = 1;
-		public static int maxLevel = 4;
-
 		[SerializeField] private int attackRange = 30;
 		[SerializeField] private float rotateSpeed = 100;
 		[SerializeField] private Transform shootPosition;
@@ -63,14 +60,15 @@ namespace FPS.EnemyAI
 
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
-			OnFortDead?.Invoke(this, EventArgs.Empty);
+			//引发死亡事件
+			InvokeOnEnemyDead();
 
 			Player.Instance.TryChangePlayerMoney(true, enemyDetail.DropMoney);
 			Player.Instance.IncreaseScore(enemyDetail.DropScore);
 
 			Destroy(gameObject);
 			//引发静态事件
-			InvokeOnEnemyDead();
+			InvokeOnAnyEnemyDead();
 		}
 
 		private void Update()

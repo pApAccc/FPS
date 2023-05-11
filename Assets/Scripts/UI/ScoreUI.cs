@@ -13,7 +13,7 @@ namespace FPS.UI
 		public TextMeshProUGUI rankText;
 		public TextMeshProUGUI playerName;
 		public TextMeshProUGUI score;
-		public TextMeshProUGUI wave;
+		public TextMeshProUGUI killedEnemy;
 
 	}
 }

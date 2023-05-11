@@ -22,6 +22,7 @@ namespace FPS.Core
 
 		[SerializeField] private int money = 0;
 		private int score;
+		public int killedEnemyAmount;
 
 		public PlayerWeapon PlayerWeapon
 		{

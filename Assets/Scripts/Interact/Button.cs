@@ -8,7 +8,7 @@ namespace FPS.Core
 	public class Button : InterableObject
 	{
 		[SerializeField] private Door door;
-		[SerializeField] private EnemySpawner enemySpawner;
+		[SerializeField] private EnemySpawnManager enemySpawner;
 
 		private void Awake()
 		{

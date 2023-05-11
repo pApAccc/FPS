@@ -1,6 +1,5 @@
+using FPS.Core;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,8 +9,17 @@ namespace FPS.EnemyAI
 {
 	public class Enemy : MonoBehaviour
 	{
-		public static event EventHandler OnEnemyDead;
+		public static int minLevel = 1;
+		public static int maxLevel = 4;
 
+		public event EventHandler OnEnemyDead;
+		public static event EventHandler OnAnyEnemyDead;
+
+		protected void InvokeOnAnyEnemyDead()
+		{
+			Player.Instance.killedEnemyAmount++;
+			OnAnyEnemyDead?.Invoke(this, EventArgs.Empty);
+		}
 		protected void InvokeOnEnemyDead()
 		{
 			OnEnemyDead?.Invoke(this, EventArgs.Empty);

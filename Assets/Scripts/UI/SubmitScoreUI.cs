@@ -22,7 +22,7 @@ namespace FPS.UI
 				{
 					playerName = text,
 					score = Player.Instance.GetScore() + Player.Instance.GetMoney() * 20,
-					wave = EnemySpawner.Instance.GetWave(),
+					killedEnemy = Player.Instance.killedEnemyAmount
 				};
 
 				HighScoreManager.Instance.AddHighScoreList(score);

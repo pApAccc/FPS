@@ -24,9 +24,6 @@ namespace FPS.EnemyAI
 		private EnemyDetail enemyDetail;
 		private int level;
 
-		public static int minLevel = 1;
-		public static int maxLevel = 4;
-
 		[SerializeField] private bool isAngry = false;
 		[SerializeField] private bool isAlwaysAngry = false;
 		[Tooltip("如果被玩家击中则进入愤怒状态的时间")]
@@ -52,10 +49,8 @@ namespace FPS.EnemyAI
 			healthSystem.OnTakeDanage += HealthSystem_OnTakeDanage;
 			healthSystem.OnHeal += HealthSystem_OnHeal;
 
-			//根据wave随机等级
-			//enemyDetail = GameHelper.GetEnemyDetailFromWave(out int randomLevel);
+			//随机等级
 			enemyDetail = new EnemyDetail(Random.Range(minLevel, maxLevel));
-			transform.localScale = new Vector3(enemyDetail.Scale, enemyDetail.Scale, enemyDetail.Scale);
 			healthSystem.SetMaxHealth(enemyDetail.Health);
 
 			stateMachine.ChangeState(enemyPatrolState, enemyDetail);
@@ -64,12 +59,15 @@ namespace FPS.EnemyAI
 		#region 注册事件
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
+			//引发死亡事件
+			InvokeOnEnemyDead();
+
 			//玩家加钱
 			Player.Instance.TryChangePlayerMoney(true, enemyDetail.DropMoney);
 			Player.Instance.IncreaseScore(enemyDetail.DropScore);
 
 			Destroy(gameObject);
-			InvokeOnEnemyDead();
+			InvokeOnAnyEnemyDead();
 		}
 
 		private void HealthSystem_OnTakeDanage(object sender, EventArgs e)
