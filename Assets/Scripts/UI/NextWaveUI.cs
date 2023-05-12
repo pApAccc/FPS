@@ -13,7 +13,6 @@ namespace FPS.UI
 		[SerializeField] private CanvasGroup backgroundCanvasGroup;
 		[SerializeField] private CanvasGroup mextWaveTextCanvasGroup;
 		[SerializeField] private TextMeshProUGUI nextWaveText;
-		private int currentWave;
 
 		private void Awake()
 		{
@@ -21,11 +20,10 @@ namespace FPS.UI
 			ResetUI();
 		}
 
-		public IEnumerator ShowUI(int wave)
+		public IEnumerator ShowUI()
 		{
 			gameObject.SetActive(true);
-			currentWave = wave;
-			nextWaveText.text = $"第 {currentWave} 波";
+			nextWaveText.text = $"小 心";
 			yield return FadeInVisual(backgroundCanvasGroup);
 			yield return FadeInVisual(mextWaveTextCanvasGroup);
 			yield return new WaitForSeconds(1);

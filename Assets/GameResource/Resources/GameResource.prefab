@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8195454668014692588}
   - component: {fileID: 5182322749690532425}
+  - component: {fileID: 8420332897841968347}
   m_Layer: 0
   m_Name: GameResource
   m_TagString: Untagged
@@ -44,4 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de55e816d7a2e12429b90e3dde39c84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoSO: {fileID: 11400000, guid: 8943f0c1c3e89854ca5073fb9cfcd624, type: 2}
+  ammoSO: {fileID: 0}
+--- !u!114 &8420332897841968347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6229012637064958076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b909347436b4f6549b9e1765eab209a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammos:
+  - ammotype: 0
+    ammoAmount: 120
+  - ammotype: 1
+    ammoAmount: 90

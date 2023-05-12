@@ -1,3 +1,4 @@
+using FPS.FPSResource;
 using FPS.Helper;
 using FPS.Settings;
 using System;
@@ -44,6 +45,7 @@ namespace FPS.Core
 							{
 								gameOverText = gameOverText,
 							});
+							Player.Instance.GetPlayerController().SetAnimatorActive(false);
 							Player.Instance.ToggleComponent(false);
 							break;
 					}

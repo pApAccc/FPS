@@ -9,7 +9,7 @@ using UnityEngine;
 namespace FPS.Weapon
 {
 	[CreateAssetMenu(fileName = "Ammo_", menuName = "ScriptableObject/Ammo")]
-	public class AmmoSO : ScriptableObject
+	public class AmmoSO : MonoBehaviour
 	{
 		[Space(10)]
 		[Header("子弹数量设置")]
@@ -26,7 +26,7 @@ namespace FPS.Weapon
 
 					foreach (Ammo ammo in ammos)
 					{
-						AmmoDictionary.Add(ammo.ammotype, ammo.ammoAmount);
+						ammoDictionary.Add(ammo.ammotype, ammo.ammoAmount);
 					}
 				}
 				return ammoDictionary;
@@ -41,6 +41,14 @@ namespace FPS.Weapon
 				return true;
 			}
 			return false;
+		}
+
+		public void ResetAmmo()
+		{
+			foreach (Ammo ammo in ammos)
+			{
+				ammoDictionary[ammo.ammotype] = ammo.ammoAmount;
+			}
 		}
 	}
 

@@ -47,8 +47,10 @@ namespace FPS.EnemyAI
 			Enemy.OnAnyEnemyDead += EnemyAI_OnEnemyDead;
 		}
 
-		private void EnemyAI_OnEnemyDead(object sender, System.EventArgs e)
+		private void EnemyAI_OnEnemyDead(object sender, bool spawnBySpawner)
 		{
+			if (!spawnBySpawner) return;
+
 			enemyAlreadyDeadCount++;
 			//所有敌人已经死亡
 			if (enemyToSpawnCount == enemyAlreadyDeadCount)
@@ -77,7 +79,7 @@ namespace FPS.EnemyAI
 
 		private IEnumerator StartNextWave()
 		{
-			yield return nextWaveUI.ShowUI(wave);
+			yield return nextWaveUI.ShowUI();
 
 			//开始诞生敌人
 			SpawnEnemy();

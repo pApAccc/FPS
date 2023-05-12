@@ -19,15 +19,7 @@ namespace FPS.EnemyAI
 
 		public IEnumerator SpawnEnemy(EnemyMovePathRoot enemyMovePathRoot, float spawnInterval)
 		{
-			int spawnAmount;
-			if (spawnMaxAmount == 0)
-			{
-				spawnAmount = Random.Range(0, 2);
-			}
-			else
-			{
-				spawnAmount = Random.Range(1, spawnMaxAmount);
-			}
+			int spawnAmount = Random.Range(1, spawnMaxAmount + 1);
 
 			EnemySpawnManager.enemyToSpawnCount += spawnAmount;
 			alreadySpawned = 0;
@@ -39,6 +31,7 @@ namespace FPS.EnemyAI
 			while (alreadySpawned != spawnAmount)
 			{
 				Enemy spawnedEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity).GetComponent<Enemy>();
+				spawnedEnemy.spawnBySpawner = true;
 
 				//尝试给诞生的敌人设置巡逻路径
 				if (spawnedEnemy.TryGetComponent(out EnemyPatrolState enemyPatrolState))

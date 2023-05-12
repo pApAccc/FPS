@@ -149,7 +149,7 @@ MonoBehaviour:
   isAlwaysAngry: 0
   angryTimer: 5
   healthBarUI: {fileID: 9198940477170075316}
-  chaseDistance: 15
+  chaseDistance: 25
 --- !u!114 &1266380383999559840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +171,7 @@ MonoBehaviour:
     type: 3}
   enemyHitEffectPrefab: {fileID: 1923500111986380, guid: 28bc85135f6af64438ba42372b2c590f,
     type: 3}
+  attackRange: 20
 --- !u!114 &1266380383999559841
 MonoBehaviour:
   m_ObjectHideFlags: 0

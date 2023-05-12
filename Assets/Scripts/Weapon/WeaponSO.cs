@@ -15,6 +15,7 @@ namespace FPS.Weapon
 		public GameObject weaponPrefab;
 		[Tooltip("武器诞生位置")]
 		public Vector3 spawnPosition;
+		public Vector3 zoomPosition;
 		public float damage;
 		public float shootInterval;
 		public GameObject shootEffect;

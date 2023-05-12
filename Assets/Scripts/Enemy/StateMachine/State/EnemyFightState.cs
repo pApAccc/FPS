@@ -15,8 +15,6 @@ namespace FPS.EnemyAI
 
 		private float damage = 15;
 		private float chaseSpeed = 3.5f;
-		private float attackRange = 5;
-
 		private float shootInterval = .7f;
 		private float shootIntervalTimer = 0;
 		private EnemyDetail enemyDetail;
@@ -29,6 +27,7 @@ namespace FPS.EnemyAI
 		[SerializeField] private LayerMask attackLayerMask;
 		[SerializeField] private GameObject enemyBulletPrefab;
 		[SerializeField] private GameObject enemyHitEffectPrefab;
+		[SerializeField] private float attackRange = 20;
 
 
 		private void Awake()
@@ -41,7 +40,6 @@ namespace FPS.EnemyAI
 			this.enemyDetail = enemyDetail;
 			damage = enemyDetail.Damage;
 			chaseSpeed = enemyDetail.MoveSpeed;
-			attackRange = 10;
 		}
 
 		public override void Perform()

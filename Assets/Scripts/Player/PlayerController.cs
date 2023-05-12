@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// 玩家控制类
@@ -44,7 +41,7 @@ namespace FPS.Core
 
 		private void GameInput_OnJump(object sender, EventArgs e)
 		{
-			Jump();
+			Jump(jumpHeight);
 		}
 
 		private void Update()
@@ -97,19 +94,24 @@ namespace FPS.Core
 			}
 		}
 
-		private void Jump()
+		public void Jump(float height)
 		{
 			if (canDoubleJump)
 			{
-				playerVeclocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+				playerVeclocity.y = Mathf.Sqrt(height * -2 * gravity);
 				canDoubleJump = false;
 			}
 
 			if (isGround)
 			{
-				playerVeclocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+				playerVeclocity.y = Mathf.Sqrt(height * -2 * gravity);
 				canDoubleJump = true;
 			}
+		}
+
+		public void SetAnimatorActive(bool active)
+		{
+			animator.enabled = active;
 		}
 
 

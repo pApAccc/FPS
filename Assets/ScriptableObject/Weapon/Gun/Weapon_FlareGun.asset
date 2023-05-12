@@ -15,6 +15,7 @@ MonoBehaviour:
   gunName: Flare
   weaponPrefab: {fileID: 100004, guid: 6832fdaf427605543911bb96706e492a, type: 3}
   spawnPosition: {x: 0.84, y: -0.95, z: 1.22}
+  zoomPosition: {x: 0.07, y: -0.8, z: 1.22}
   damage: 50
   shootInterval: 0.5
   shootEffect: {fileID: 1738175644799202, guid: e98353779d8e4a14baf2ae08120c8bd4,

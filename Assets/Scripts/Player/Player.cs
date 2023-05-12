@@ -19,6 +19,7 @@ namespace FPS.Core
 		private PlayerRayCast playerRayCast;
 		private HealthSystem healthSystem;
 		private PlayerWeapon playerWeapon;
+		private Animator animator;
 
 		[SerializeField] private int money = 0;
 		private int score;
@@ -43,6 +44,7 @@ namespace FPS.Core
 			playerController = GetComponent<PlayerController>();
 			playerRayCast = GetComponent<PlayerRayCast>();
 			healthSystem = GetComponent<HealthSystem>();
+			animator = GetComponent<Animator>();
 		}
 
 		private void Start()
@@ -117,5 +119,7 @@ namespace FPS.Core
 		public int GetScore() => score;
 
 		public int GetMoney() => money;
+
+		public PlayerController GetPlayerController() => playerController;
 	}
 }

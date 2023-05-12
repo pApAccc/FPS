@@ -1,6 +1,7 @@
 using Common.SavingSystem.Sample;
 using FPS.Core;
 using FPS.EnemyAI;
+using FPS.FPSResource;
 using FPS.Helper;
 using System.Collections;
 using TMPro;

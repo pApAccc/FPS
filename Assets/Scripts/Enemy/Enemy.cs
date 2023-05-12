@@ -11,14 +11,15 @@ namespace FPS.EnemyAI
 	{
 		public static int minLevel = 1;
 		public static int maxLevel = 4;
+		public bool spawnBySpawner = false;
 
 		public event EventHandler OnEnemyDead;
-		public static event EventHandler OnAnyEnemyDead;
+		public static event EventHandler<bool> OnAnyEnemyDead;
 
 		protected void InvokeOnAnyEnemyDead()
 		{
 			Player.Instance.killedEnemyAmount++;
-			OnAnyEnemyDead?.Invoke(this, EventArgs.Empty);
+			OnAnyEnemyDead?.Invoke(this, spawnBySpawner);
 		}
 		protected void InvokeOnEnemyDead()
 		{

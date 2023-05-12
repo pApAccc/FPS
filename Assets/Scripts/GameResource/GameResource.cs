@@ -1,3 +1,4 @@
+using FPS.Helper;
 using FPS.Weapon;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,21 +9,15 @@ using UnityEngine;
 /// </summary>
 namespace FPS.FPSResource
 {
-    public class GameResource : MonoBehaviour
-    {
-        public AmmoSO ammoSO;
+	public class GameResource : SingletonMonoBehaviour<GameResource>
+	{
+		[HideInInspector] public AmmoSO ammoSO;
 
-        private static GameResource instance;
-        public static GameResource Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = Resources.Load<GameResource>("GameResource");
-                }
-                return instance;
-            }
-        }
-    }
+		protected override void Awake()
+		{
+			base.Awake();
+
+			ammoSO = GetComponent<AmmoSO>();
+		}
+	}
 }

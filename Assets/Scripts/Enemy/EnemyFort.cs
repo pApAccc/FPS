@@ -76,8 +76,8 @@ namespace FPS.EnemyAI
 			if (GameHelper.IsPlayerInRange(transform.position, attackRange))
 			{
 				Vector3 lookDir = (Player.Instance.transform.position - transform.position).normalized;
-				Quaternion trandformRotation = Quaternion.LookRotation(Player.Instance.transform.position - transform.position);
-				transform.rotation = Quaternion.Lerp(transform.rotation, trandformRotation, rotateSpeed * Time.deltaTime);
+				Quaternion transformRotation = Quaternion.LookRotation(lookDir);
+				transform.rotation = Quaternion.Lerp(transform.rotation, transformRotation, rotateSpeed * Time.deltaTime);
 
 				Vector3 rayDir = (Player.Instance.transform.position - shootPosition.position).normalized;
 				if (Physics.Raycast(shootPosition.position, rayDir, out RaycastHit hit, attackRange, attackLayerMask))

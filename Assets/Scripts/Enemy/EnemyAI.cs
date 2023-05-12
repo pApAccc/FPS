@@ -30,7 +30,7 @@ namespace FPS.EnemyAI
 		[SerializeField] private float angryTimer = 5f;
 		[SerializeField] private HealthBarUI healthBarUI;
 		[Tooltip("在此范围内就会追击玩家")]
-		[SerializeField] private float chaseDistance = 20;
+		[SerializeField] private float chaseDistance = 30;
 
 		private void Awake()
 		{

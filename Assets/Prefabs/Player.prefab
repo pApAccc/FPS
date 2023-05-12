@@ -338,6 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   money: 100
+  killedEnemyAmount: 0
   healthBarUI: {fileID: 0}
   ammoSO: {fileID: 11400000, guid: 8943f0c1c3e89854ca5073fb9cfcd624, type: 2}
 --- !u!114 &2806433485948941634
@@ -402,8 +403,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponRoot: {fileID: 2272333519009255114}
   weaponSOList:
-  - {fileID: 11400000, guid: a8fc0f3a7eaa1654ab2af913afe8864b, type: 2}
   - {fileID: 11400000, guid: a34f80c7bea842d4dae675d2dae0047a, type: 2}
+  virtualCamera: {fileID: 2806433484354767188}
 --- !u!95 &83730746
 Animator:
   serializedVersion: 4

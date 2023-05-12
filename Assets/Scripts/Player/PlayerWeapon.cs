@@ -46,7 +46,6 @@ namespace FPS.Core
 		}
 
 
-
 		private void OnDisable()
 		{
 			//防止GameInput先销毁导致空指针
@@ -56,6 +55,7 @@ namespace FPS.Core
 				GameInput.Instance.OnFire -= GameInput_OnFire;
 				GameInput.Instance.OnReload -= GameInput_OnReload;
 				GameInput.Instance.OnZoomOut -= GameInput_OnZoomOut;
+				GameInput.Instance.OnZoomIn -= GameInput_OnZoomIn;
 			}
 		}
 
@@ -95,14 +95,21 @@ namespace FPS.Core
 
 		private void GameInput_OnZoomIn(object sender, EventArgs e)
 		{
+			//镜头缩放
 			virtualCamera.m_Lens.FieldOfView = Mathf.Lerp(virtualCamera.m_Lens.FieldOfView,
 														zoomInLens, 20 * Time.deltaTime);
+
+			currentWeapon.transform.localPosition = Vector3.MoveTowards(currentWeapon.transform.localPosition, currentWeaponSO.zoomPosition, 10 * Time.deltaTime);
+			Player.Instance.GetPlayerController().SetAnimatorActive(false);
 		}
 
 		private void GameInput_OnZoomOut(object sender, EventArgs e)
 		{
 			virtualCamera.m_Lens.FieldOfView = Mathf.Lerp(virtualCamera.m_Lens.FieldOfView,
 														defaultZoomLens, 20 * Time.deltaTime);
+
+			currentWeapon.transform.localPosition = Vector3.MoveTowards(currentWeapon.transform.localPosition, currentWeaponSO.spawnPosition, 10 * Time.deltaTime);
+			Player.Instance.GetPlayerController().SetAnimatorActive(true);
 		}
 
 
@@ -182,7 +189,7 @@ namespace FPS.Core
 		/// 装备武器
 		/// </summary>
 		/// <param name="weapon"></param>
-		private void EquipWeapon(WeaponSO weapon)
+		public void EquipWeapon(WeaponSO weapon)
 		{
 			foreach (KeyValuePair<WeaponSO, Gun> keyValuePair in weaponDict)
 			{
@@ -213,6 +220,8 @@ namespace FPS.Core
 				//诞生武器
 				SpawnWeapon(weapon);
 				weaponSOList.Add(weapon);
+
+				EquipWeapon(weapon);
 			}
 		}
 
