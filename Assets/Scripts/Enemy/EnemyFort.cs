@@ -12,8 +12,6 @@ namespace FPS.EnemyAI
 {
 	public class EnemyFort : Enemy
 	{
-		public event EventHandler OnFortDead;
-
 		private HealthSystem healthSystem;
 		private EnemyDetail enemyDetail;
 		private int level;

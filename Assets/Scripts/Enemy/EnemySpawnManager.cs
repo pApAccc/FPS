@@ -24,7 +24,7 @@ namespace FPS.EnemyAI
 		private List<EnemySpawner> enemySpawners = new();
 
 		[Tooltip("最大敌人诞生波次,到达此波次后游戏结束")]
-		[SerializeField] private int maxEnemySpawnWave = 10;
+		[SerializeField] private int maxEnemySpawnWave = 1;
 		[SerializeField] private float spawnInterval = 1;
 		[SerializeField] private List<EnemyMovePathRoot> enemyMovePathRoots;
 		[SerializeField] private NextWaveUI nextWaveUI;
@@ -69,6 +69,11 @@ namespace FPS.EnemyAI
 			}
 		}
 
+		private void OnDisable()
+		{
+			enemyToSpawnCount = 0;
+		}
+
 		private void Update()
 		{
 			if (!resume) return;
@@ -85,6 +90,7 @@ namespace FPS.EnemyAI
 			SpawnEnemy();
 		}
 
+		// 开始诞生敌人
 		private void SpawnEnemy()
 		{
 			foreach (EnemySpawner enemySpawner in enemySpawners)
@@ -93,6 +99,7 @@ namespace FPS.EnemyAI
 			}
 		}
 
+		//等待下一波
 		private IEnumerator WaitForNextWave()
 		{
 			yield return new WaitForSeconds(waitTime);

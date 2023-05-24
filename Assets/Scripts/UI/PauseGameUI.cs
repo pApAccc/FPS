@@ -1,6 +1,7 @@
 using Common.SavingSystem.Sample;
 using FPS.Core;
 using FPS.Helper;
+using System;
 using UnityEngine;
 using Button = UnityEngine.UI.Button;
 
@@ -54,7 +55,7 @@ namespace FPS.UI
 				GameManager.Instance.OnGamePuase -= GameManager_OnGamePuase;
 		}
 
-		private void GameManager_OnGamePuase(object sender, OnGamePuaseEventArgs e)
+		private void GameManager_OnGamePuase(object sender, EventArgs e)
 		{
 			//玩家死亡无法暂停
 			if (Player.Instance.IsDead()) return;

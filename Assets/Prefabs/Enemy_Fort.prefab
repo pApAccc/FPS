@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnBySpawner: 0
-  attackRange: 60
+  attackRange: 45
   rotateSpeed: 10
   shootPosition: {fileID: 9176014667779905632}
   attackLayerMask:

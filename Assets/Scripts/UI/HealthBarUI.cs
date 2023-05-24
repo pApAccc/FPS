@@ -43,7 +43,7 @@ namespace FPS.UI
 			}
 		}
 		//回血效果
-		public void healVisual(float healthPrecent)
+		public void HealVisual(float healthPrecent)
 		{
 			healthPercent = healthPrecent;
 			//更改效果

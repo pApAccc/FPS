@@ -24,7 +24,7 @@ namespace FPS.EnemyAI
 		private void Update()
 		{
 			liveTimer -= Time.deltaTime;
-			transform.position += transform.forward * moveSpeed * Time.deltaTime;
+			transform.position += moveSpeed * Time.deltaTime * transform.forward;
 
 			if (liveTimer <= 0)
 			{

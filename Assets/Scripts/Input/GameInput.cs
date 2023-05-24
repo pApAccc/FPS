@@ -19,7 +19,7 @@ namespace FPS.Core
 		public event EventHandler<float> OnMouseScrollValueChanged;
 
 		private GameInputControl input;
-		private event EventHandler tempPauseEventHandler;
+		private event EventHandler TempPauseEventHandler;
 
 		protected override void Awake()
 		{
@@ -103,13 +103,13 @@ namespace FPS.Core
 
 		public void ClearPauseEvent()
 		{
-			tempPauseEventHandler = OnQuit;
+			TempPauseEventHandler = OnQuit;
 			OnQuit = null;
 		}
 
 		public void RecoverPauseEvent()
 		{
-			OnQuit = tempPauseEventHandler;
+			OnQuit = TempPauseEventHandler;
 		}
 	}
 

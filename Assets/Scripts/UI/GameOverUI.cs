@@ -32,7 +32,6 @@ namespace FPS.UI
 			{
 				LoadScene.LoadGameScene(Settings.GameScene.GameScene);
 				SavingWrapper.Instance.Save();
-				GameManager.Instance.GameState = Settings.GameState.GameResume;
 			});
 
 			submitScoreBtn.onClick.AddListener(() =>

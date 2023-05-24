@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 namespace FPS.Weapon
 {
-	[CreateAssetMenu(fileName = "Ammo_", menuName = "ScriptableObject/Ammo")]
 	public class AmmoSO : MonoBehaviour
 	{
 		[Space(10)]

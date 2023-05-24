@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea8b14daae40546934164cd0398f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnBySpawner: 0
   isAngry: 0
   isAlwaysAngry: 0
   angryTimer: 5
@@ -427,6 +428,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   enemyBulletPrefab: {fileID: 0}
+  enemyHitEffectPrefab: {fileID: 0}
+  attackRange: 20
 --- !u!114 &1266380383999559841
 MonoBehaviour:
   m_ObjectHideFlags: 0

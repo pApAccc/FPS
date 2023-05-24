@@ -1,4 +1,5 @@
 using Common.SavingSystem.Sample;
+using FPS.Core;
 using FPS.Settings;
 using System.Collections;
 using UnityEngine;
@@ -31,13 +32,23 @@ namespace FPS.Helper
 		{
 			AsyncOperation operation = SceneManager.LoadSceneAsync(gameScene.ToString());
 			operation.allowSceneActivation = true;
-			operation.completed += x => SavingWrapper.Instance.Load();
+			operation.completed += x =>
+			{
+				SavingWrapper.Instance.Load();
+
+				if (gameScene == GameScene.GameScene)
+				{
+					GameManager.Instance.GameState = GameState.GameResume;
+				}
+			};
 
 			while (true)
 			{
 				loadingBar.fillAmount = operation.progress / 0.9f;
 				yield return null;
+
 			}
+
 		}
 	}
 }

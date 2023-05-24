@@ -85,7 +85,7 @@ namespace FPS.EnemyAI
 
 		private void HealthSystem_OnHeal(object sender, EventArgs e)
 		{
-			healthBarUI.healVisual(healthSystem.GetHealthPrecent());
+			healthBarUI.HealVisual(healthSystem.GetHealthPrecent());
 
 			//关闭血量UI
 			if (healthSystem.GetHealthPrecent() >= 1)

@@ -26,7 +26,7 @@ namespace FPS.Core
 			scores.Add(score);
 
 			scores = scores.OrderByDescending(score => score.score).
-							ThenBy(score => score.playerName).ToList();
+							ThenBy(score => score.killedEnemy).ToList();
 
 			for (int i = 0; i < scores.Count; i++)
 			{

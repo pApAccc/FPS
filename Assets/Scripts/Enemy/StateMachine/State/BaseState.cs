@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 namespace FPS.EnemyAI
 {
+	//基础状态类
 	public abstract class BaseState : MonoBehaviour
 	{
 		public abstract void Enter(EnemyDetail enemyDetail);

@@ -35,7 +35,6 @@ namespace FPS.Core
 		}
 
 		[SerializeField] private HealthBarUI healthBarUI;
-		[SerializeField] private AmmoSO ammoSO;
 
 		protected override void Awake()
 		{
@@ -67,7 +66,7 @@ namespace FPS.Core
 
 		private void HealthSystem_OnHeal(object sender, EventArgs e)
 		{
-			healthBarUI.healVisual(healthSystem.GetHealthPrecent());
+			healthBarUI.HealVisual(healthSystem.GetHealthPrecent());
 		}
 		private void HealthSystem_OnDead(object sender, EventArgs e)
 		{
@@ -86,6 +85,9 @@ namespace FPS.Core
 			playerController.enabled = active;
 			playerWeapon.enabled = active;
 			playerRayCast.enabled = active;
+
+			animator.SetBool("onGround", true);
+			animator.SetBool("isRun", false);
 		}
 
 		public bool IsDead()

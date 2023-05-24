@@ -1,4 +1,3 @@
-using FPS.FPSResource;
 using FPS.Helper;
 using FPS.Settings;
 using System;
@@ -11,7 +10,7 @@ namespace FPS.Core
 {
 	public class GameManager : SingletonMonoBehaviour<GameManager>
 	{
-		public event EventHandler<OnGamePuaseEventArgs> OnGamePuase;
+		public event EventHandler OnGamePuase;
 		public event EventHandler<OnGameOverEventArgs> OnGameOver;
 
 		private GameState gameState;
@@ -52,7 +51,6 @@ namespace FPS.Core
 				}
 			}
 		}
-		private bool isGamePaused = false;
 
 		protected override void Awake()
 		{
@@ -61,18 +59,20 @@ namespace FPS.Core
 			base.Awake();
 		}
 
-		public void Start()
+		public void OnEnable()
 		{
 			GameInput.Instance.OnQuit += GameInput_OnPause;
 		}
 
+		private void OnDisable()
+		{
+			if (GameInput.Instance != null)
+				GameInput.Instance.OnQuit -= GameInput_OnPause;
+		}
+
 		private void GameInput_OnPause(object sender, EventArgs e)
 		{
-			OnGamePuase?.Invoke(this, new OnGamePuaseEventArgs
-			{
-				isGamePaused = isGamePaused,
-				currentActiveCount = OnGamePuase.GetInvocationList().Length
-			});
+			OnGamePuase?.Invoke(this, EventArgs.Empty);
 		}
 
 		/// <summary>
@@ -86,16 +86,14 @@ namespace FPS.Core
 				Time.timeScale = 0;
 				Cursor.visible = true;
 				Cursor.lockState = CursorLockMode.None;
-				Player.Instance.ToggleComponent(false);
-				isGamePaused = true;
+				Player.Instance?.ToggleComponent(false);
 			}
 			else
 			{
 				Time.timeScale = 1;
 				Cursor.visible = false;
 				Cursor.lockState = CursorLockMode.Locked;
-				Player.Instance.ToggleComponent(true);
-				isGamePaused = false;
+				Player.Instance?.ToggleComponent(true);
 			}
 		}
 
@@ -111,10 +109,5 @@ namespace FPS.Core
 		public string gameOverText;
 	}
 
-	public class OnGamePuaseEventArgs : EventArgs
-	{
-		public bool isGamePaused;
-		public int currentActiveCount;
-	}
 
 }
